@@ -22,8 +22,8 @@ npm install @react-native-clipboard/clipboard   # optional, only needed for defe
 ## Native setup (required — this SDK doesn't replace it)
 
 Universal Links / App Links are OS-level features; you still need to configure them
-natively so the OS knows to hand your app URLs from your domain, so Anthropic isn't
-duplicating what React Navigation's own linking docs cover:
+natively so the OS knows to hand your app URLs from your domain. WilderLinks keeps
+the app-routing logic in one place while React Navigation handles screen mapping:
 
 - **iOS**: add your domain under *Associated Domains* capability as
   `applinks:go.yourbrand.com`, matching the `appId` you configured for that domain
