@@ -103,7 +103,7 @@ object Wildlinks {
     return try {
       val response = postJson(endpoint, JSONObject(body).toString())
       if (response.optBoolean("matched", false)) response.toResolved(true)
-      else ResolvedLink(matched = false, error = response.optString("error", null))
+      else ResolvedLink(matched = false, error = response.optString("error").takeIf { it.isNotBlank() })
     } catch (error: Exception) {
       ResolvedLink(matched = false, error = error.message ?: "Network error")
     }

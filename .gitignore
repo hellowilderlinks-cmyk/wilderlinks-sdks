@@ -23,5 +23,10 @@ flutter/example/.packages
 flutter/example/.flutter-plugins-dependencies
 flutter/example/pubspec.lock
 
+# Android package artifacts
+android/.gradle/
+android/build/
+android/wildlinks/build/
+
 # Swift Package Manager artifacts
 ios/.build/
