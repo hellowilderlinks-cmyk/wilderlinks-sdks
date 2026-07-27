@@ -1,52 +1,40 @@
-# WildLinks Flutter SDK
+# WilderLinks Flutter SDK
 
-Flutter SDK for the WildLinks smart link platform: resolves Universal Links / App
-Links when your app is already installed, supports app-specific prefixed links like
-`/x4I9/slug`, and recovers deferred deep link intent on first launch after a fresh
-install.
+The Flutter SDK helps your app handle the two main WilderLinks flows:
+
+1. A user taps a smart link and your app is already installed.
+2. A user taps a smart link, installs the app, and opens it for the first time.
+
+It also supports app-specific path prefixes when multiple apps share one branded
+domain.
 
 ## Install
 
-Add to `pubspec.yaml`:
+Add the package:
 
 ```yaml
 dependencies:
   wildlinks_flutter_sdk: ^1.0.6
 ```
 
-Then:
+Then run:
 
 ```bash
 flutter pub get
 ```
 
-## Native setup (required — this package doesn't replace it)
+## What you still need to configure natively
 
-- **iOS**: enable *Associated Domains* capability in Xcode, add
-  `applinks:go.yourbrand.com` matching the `appId` configured for that domain in
-  the dashboard's Domains page.
-- **Android**: add an `<intent-filter android:autoVerify="true">` for
-  `go.yourbrand.com` in `AndroidManifest.xml`, matching the `packageName` +
-  `sha256CertFingerprints` configured in the dashboard.
+This SDK does not replace iOS Associated Domains or Android App Links setup.
 
-The App Store URL is mainly the fallback when the app is not installed.
-Installed-build Universal Link behavior depends on the Associated Domains
-entitlement, matching app ID, and a valid AASA file.
+- **iOS**: add your branded domain in Xcode using `applinks:go.wilderbots.com`
+  or your own WilderLinks domain.
+- **Android**: add an `intent-filter` with `android:autoVerify="true"` for your
+  branded domain in `AndroidManifest.xml`.
 
-Both of those dashboard entries are what make `/.well-known/apple-app-site-association`
-and `/.well-known/assetlinks.json` serve correctly for your domain — the OS checks
-those files to decide whether to hand your app the link at all.
+Those native settings are what allow the OS to hand the link into your app.
 
-If your org uses multiple apps on the same branded domain, WildLinks can generate
-prefixed links such as `https://link.valueshift.in/x4I9/launch-offer`. The Flutter
-SDK handles those automatically; you do not need to parse the prefix yourself.
-
-## Quick start
-
-Initialize the SDK once near app startup, then start listening for inbound
-link resolutions.
-
-## Usage
+## Initialize once
 
 ```dart
 import 'package:wildlinks_flutter_sdk/wildlinks_flutter_sdk.dart';
@@ -58,13 +46,11 @@ void main() {
   ));
   runApp(const MyApp());
 }
+```
 
-class MyApp extends StatefulWidget {
-  const MyApp({super.key});
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
+## Listen for incoming links
 
+```dart
 class _MyAppState extends State<MyApp> {
   final _listener = WildlinksListener();
 
@@ -74,16 +60,14 @@ class _MyAppState extends State<MyApp> {
     _listener.stream.listen((resolved) {
       if (!resolved.matched) return;
 
-      // Works for every matched link, even when no app payload was attached.
-      print('Destination URL: ${resolved.destinationUrl}');
+      print('Destination: ${resolved.destinationUrl}');
       print('Open ID: ${resolved.openId}');
 
-      // Optional app-specific routing metadata, only present if you created
-      // the link with deepLinkPayload.
-      if (resolved.deepLinkPayload != null) {
+      final payload = resolved.deepLinkPayload;
+      if (payload != null) {
         Navigator.of(context).pushNamed(
-          resolved.deepLinkPayload!['screen'] as String,
-          arguments: resolved.deepLinkPayload,
+          payload['screen'] as String,
+          arguments: payload,
         );
       }
     });
@@ -95,66 +79,40 @@ class _MyAppState extends State<MyApp> {
     _listener.dispose();
     super.dispose();
   }
-
-  @override
-  Widget build(BuildContext context) => const MaterialApp(home: HomeScreen());
 }
 ```
 
-`deepLinkPayload` is optional. If you create a normal smart link without app
-metadata, `resolved.deepLinkPayload` will be `null` and you can just use
-`resolved.destinationUrl`.
+## Create a short link
 
-## Create a plain short link
-
-Use this when you only need a short URL that redirects to a destination URL.
+Use this when you only need a short URL that redirects to a long destination.
 
 ```dart
 final shortUrl = await WildlinksSdk.createShortLink(
-  'https://yourwebsite.com/promo',
+  'https://www.clientbrand.com/summer-sale',
 );
-
-print(shortUrl);
 ```
 
-## Create smart deep links from your app
+## Create a smart app link
 
-Use `deepLinkPayload` only when your app needs extra routing data.
+Use this when your app should receive structured routing data.
 
 ```dart
-import 'package:wildlinks_flutter_sdk/wildlinks_flutter_sdk.dart';
+final link = await WildlinksSdk.createDeepLink(
+  defaultUrl: 'https://www.clientbrand.com/summer-sale',
+  title: 'Summer sale',
+  pathPrefix: 'x4I9',
+  deepLinkPayload: {
+    'screen': 'offer',
+    'offerId': 'summer24',
+  },
+);
 
-void main() {
-  WildlinksSdk.init(const WildlinksConfig(
-    baseUrl: 'https://apilink.wilderbots.com',
-    domains: ['go.wilderbots.com'],
-    apiKey: 'dlk_xxx',
-  ));
-  runApp(const MyApp());
-}
-
-Future<void> createAndShareLink() async {
-  final link = await WildlinksSdk.createDeepLink(
-    defaultUrl: 'https://yourwebsite.com/promo',
-    title: 'Spring sale',
-    pathPrefix: 'x4I9',
-    deepLinkPayload: {'screen': 'offer', 'offerId': 'spring24'},
-  );
-
-  print('Link created: ${link.shortUrl}');
-  // Share link.shortUrl using your platform's share UI.
-}
+print(link.shortUrl);
 ```
 
-Use `pathPrefix` when the app should create links under a specific namespace like
-`https://link.valueshift.in/x4I9/launch-offer`. The backend resolves the matching
-app profile from that prefix on the selected domain.
+## Match App Store attribution
 
-## App Store install attribution
-
-For iOS App Store fallback, WilderLinks appends `ct=wl_<token>` to App Store URLs.
-If your attribution provider or custom first-launch flow returns that campaign
-token, exchange it for the original deferred payload:
+If your iOS install attribution flow returns a `wl_<token>` value, exchange it:
 
 ```dart
 final result = await WildlinksSdk.matchInstallAttributionToken(
@@ -164,5 +122,13 @@ final result = await WildlinksSdk.matchInstallAttributionToken(
 );
 ```
 
-Matched app opens are recorded in WilderLinks analytics. When the backend creates
-an open record, `ResolvedLink.openId` is populated.
+## Example URLs used in docs
+
+- API base: `https://apilink.wilderbots.com`
+- Branded domain: `https://go.wilderbots.com`
+- Product site example: `https://www.clientbrand.com/summer-sale`
+
+## Support
+
+- Website: `https://wildlinks.wilderbots.com`
+- Contact: `https://wildlinks.wilderbots.com/contact`

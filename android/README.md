@@ -1,18 +1,15 @@
 # WilderLinks Android SDK
 
-Native Android SDK for resolving WilderLinks App Links and recovering deferred
-deep-link payloads after install.
+Use the Android SDK to resolve App Links, recover deferred install intent, and
+exchange install attribution tokens.
 
-## Install
-
-Add the `wildlinks` module or publish it to your Maven registry, then initialize
-the SDK at app startup:
+## Initialize
 
 ```kotlin
 Wildlinks.init(
   WildlinksConfig(
     baseUrl = "https://apilink.wilderbots.com",
-    domains = listOf("go.yourbrand.com")
+    domains = listOf("go.wilderbots.com")
   )
 )
 ```
@@ -22,19 +19,19 @@ Wildlinks.init(
 ```kotlin
 val result = Wildlinks.handleIncomingUri(intent.data!!)
 if (result.matched) {
-  // result.deepLinkPayload contains the original campaign payload.
-  // result.openId is present when WilderLinks tracked this app open.
+  // result.destinationUrl
+  // result.deepLinkPayload
+  // result.openId
 }
 ```
 
-## Deferred install match
+## Match a deferred install
 
 ```kotlin
 val result = Wildlinks.checkDeferredInstall(context)
 ```
 
-For higher-accuracy Play Store attribution, read the Play Install Referrer string
-in your app and pass the extracted `dl_match_token` directly:
+## Match a known deferred token
 
 ```kotlin
 val result = Wildlinks.matchDeferredToken(
@@ -43,9 +40,7 @@ val result = Wildlinks.matchDeferredToken(
 )
 ```
 
-## App Store attribution token
-
-The Android package exposes the same provider claim API for shared codebases:
+## Match App Store-style attribution token
 
 ```kotlin
 val result = Wildlinks.matchInstallAttributionToken(
@@ -53,3 +48,8 @@ val result = Wildlinks.matchInstallAttributionToken(
   "wl_<token-from-provider>"
 )
 ```
+
+## Support
+
+- Website: `https://wildlinks.wilderbots.com`
+- Contact: `https://wildlinks.wilderbots.com/contact`

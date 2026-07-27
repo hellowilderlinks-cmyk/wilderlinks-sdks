@@ -1,56 +1,64 @@
 # WilderLinks SDKs
 
-Beta SDKs for resolving WilderLinks smart links, claiming deferred install
-matches, and creating links from trusted runtimes.
+WilderLinks gives your product one link system for:
 
-Seven packages, one platform. Pick what matches your stack:
+- direct deep linking
+- deferred deep linking after install
+- Universal Links and Android App Links
+- QR campaigns
+- analytics-ready routing
+- server-side link creation
 
-| Package | For | Verified |
-|---|---|---|
-| `web/` — `@wilderbots/wildlinks-sdk` | Node/Next.js backends, browser-side web apps | ✅ tsc + tsup build both pass |
-| `react-native/` — `@wilderbots/wildlinks-react-native` | React Native apps | ✅ tsc + tsup build both pass |
-| `flutter/` — `wildlinks_flutter_sdk` | Flutter apps | ⚠️ run `flutter pub get` + `dart analyze` before publishing |
-| `android/` — `com.wilderbots.wildlinks` | Native Android/Kotlin apps | ⚠️ Gradle wrapper not included; compile with Gradle/Android Studio |
-| `ios/` — `WildlinksSDK` | Native iOS/Swift apps | ✅ `swift test` passes |
-| `unity/` — `com.wilderbots.wildlinks` | Unity games and apps | ⚠️ validate inside Unity Package Manager before publishing |
-| `cli/` — `@wilderbots/wildlinks-cli` | Terminal and CI link management | ✅ node syntax + help smoke pass |
+This folder contains the official SDKs for different client stacks.
 
-All SDKs talk to the same backend endpoints for the interesting part
-(deep linking, not link management):
+## Pick your SDK
 
-- `GET /api/v1/resolve` — "the OS just handed my app this URL, what does it mean?"
-  (app already installed — the common path)
-- `POST /api/v1/match` — "this is a fresh install, was it from a smart link tap?"
-  (deferred deep linking — the app-not-installed-yet path)
-- `POST /api/v1/match/install-attribution` — "an install attribution provider
-  returned the App Store campaign token; recover the original payload"
+| SDK | Best for |
+| --- | --- |
+| `flutter/` | Flutter apps |
+| `react-native/` | React Native apps |
+| `android/` | Native Android apps |
+| `ios/` | Native iOS apps |
+| `web/` | Node.js backends and browser web apps |
+| `unity/` | Unity games and interactive apps |
+| `cli/` | Terminal workflows and CI automation |
 
-Matched app opens are tracked by the API, and SDK result models expose optional
-`openId` when the backend creates a first-class open record.
+## Product links
 
-All SDKs now understand both link shapes:
+- Website: `https://wildlinks.wilderbots.com`
+- Dashboard: `https://wilderlinks.wilderbots.com`
+- Pricing: `https://wildlinks.wilderbots.com/pricing`
+- Contact: `https://wildlinks.wilderbots.com/contact`
+- SDK repository: `https://github.com/wilderbots-droid/wildlinks-sdks`
 
-- `https://yourdomain.com/slug`
-- `https://yourdomain.com/x4I9/slug`
+## Shared API base
 
-For prefixed links, the SDKs treat the last path segment as the slug and pass the
-rest back to the backend as `pathPrefix`, so app-specific routing keeps working when
-multiple apps share one branded domain.
+Most SDK examples in this repo use:
 
-Both are public (no API key) since they're called from inside a consumer's own
-app/browser, not a trusted backend. Link *creation* (`POST /api/v1/links`) does
-require an API key — that's the `WildlinksClient` in the web SDK, meant for
-server-side use only. Link creation can include `pathPrefix` when you want the
-generated URL to use a specific app namespace on a shared domain.
+`https://apilink.wilderbots.com`
 
-See each package's own README for install + usage.
+That is the hosted WilderLinks API base used by the examples. If your team runs a
+different environment, replace it with your own API origin.
 
-## Current Platform Coverage
+## Shared branded-domain example
 
-The beta platform behind these SDKs includes direct/deferred deep links,
-Universal Links, Android App Links, multi-app path prefixes, smart fallbacks,
-preview testing, QR-to-link flows, click/install/open analytics, custom events,
-webhooks, REST API, CLI support, and AI-assisted campaign diagnostics.
+Examples use:
 
-Extras such as browser extensions, Figma, Zapier, n8n, App Clips, Instant Apps,
-NFC, heatmaps, and session replay are future backlog items.
+`https://go.wilderbots.com`
+
+Replace that with your own branded routing domain when you configure your app.
+
+## What the SDKs handle
+
+Depending on the platform, the SDKs can help with:
+
+- resolving installed-app deep links
+- matching deferred installs
+- creating short links and smart links
+- working with app-specific path prefixes
+- reading install attribution tokens
+- sending custom events
+- generating QR-ready links from trusted runtimes
+
+Each SDK README explains the supported flows, install steps, and production
+integration pattern for that platform.

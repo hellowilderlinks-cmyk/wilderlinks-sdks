@@ -1,17 +1,19 @@
-# Wildlinks Unity SDK
+# WilderLinks Unity SDK
 
-Unity Package Manager package for resolving WilderLink URLs and sending custom
-events from Unity games and apps.
+Use the Unity SDK when your game or app needs to:
+
+- resolve incoming smart links
+- recover deferred install matches
+- create app links from trusted builds
+- send custom engagement events
 
 ## Install
 
-Add this package from a Git URL in Unity Package Manager:
+Add the package in Unity Package Manager using the Git URL:
 
 ```text
 https://github.com/wilderbots-droid/wildlinks-sdks.git?path=/unity
 ```
-
-Or copy the `unity/` folder into your project's `Packages/` directory.
 
 ## Initialize
 
@@ -19,24 +21,18 @@ Or copy the `unity/` folder into your project's `Packages/` directory.
 using Wilderbots.Wildlinks;
 
 WildlinksClient.Init(new WildlinksConfig(
-    baseUrl: "https://api.yourservice.in",
-    domains: new[] { "go.yourbrand.com" },
+    baseUrl: "https://apilink.wilderbots.com",
+    domains: new[] { "go.wilderbots.com" },
     apiKey: "dlk_xxx"
 ));
 ```
 
-Only trusted builds should include an API key. For consumer mobile games, prefer
-creating links from your backend and use the Unity SDK only for resolve/match.
-
-## Resolve an incoming deep link
-
-Call this when your app receives a Universal Link or Android App Link.
+## Resolve a link
 
 ```csharp
 StartCoroutine(WildlinksClient.HandleIncomingUrl(url, result =>
 {
     if (!result.matched) return;
-    Debug.Log(result.openId);
     Debug.Log(result.destinationUrl);
     Debug.Log(result.deepLinkPayloadJson);
 }));
@@ -54,33 +50,18 @@ StartCoroutine(WildlinksClient.CheckDeferredInstall(result =>
 }));
 ```
 
-For higher-accuracy Android deferred matching, read the Play Install Referrer in
-native code and pass the extracted `dl_match_token` to `MatchDeferredToken`.
-
-## Create a link
+## Create a smart link
 
 ```csharp
 var request = new WildlinksCreateLinkRequest
 {
-    defaultUrl = "https://example.com/promo",
+    defaultUrl = "https://www.clientbrand.com/summer-sale",
     title = "Launch Offer",
-    deepLinkPayloadJson = "{\"screen\":\"offer\",\"offerId\":\"spring24\"}",
-    ctaOverlayJson = "{\"enabled\":true,\"title\":\"Bonus\",\"buttonUrl\":\"https://example.com/bonus\"}",
-    utm = new WildlinksUtm
-    {
-        source = "unity",
-        medium = "game",
-        campaign = "spring24"
-    }
+    deepLinkPayloadJson = "{\"screen\":\"offer\",\"offerId\":\"summer24\"}"
 };
 
 StartCoroutine(WildlinksClient.CreateLink(request, link =>
 {
-    if (!string.IsNullOrEmpty(link.error))
-    {
-        Debug.LogError(link.error);
-        return;
-    }
     Debug.Log(link.shortUrl);
 }));
 ```
@@ -92,10 +73,14 @@ StartCoroutine(WildlinksClient.TrackEvent(new WildlinksTrackEventRequest
 {
     name = "level_complete",
     linkId = "link_id",
-    value = 1,
-    metadataJson = "{\"level\":3}"
+    value = 1
 }, result =>
 {
     if (!string.IsNullOrEmpty(result.error)) Debug.LogError(result.error);
 }));
 ```
+
+## Support
+
+- Website: `https://wildlinks.wilderbots.com`
+- Contact: `https://wildlinks.wilderbots.com/contact`

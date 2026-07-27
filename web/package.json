@@ -1,14 +1,14 @@
 {
   "name": "@wilderbots/wildlinks-sdk",
   "version": "1.0.3",
-  "description": "Web SDK for the WildLinks smart link platform - server-side link management and browser-side deferred deep link matching",
+  "description": "Web SDK for the WilderLinks smart link platform - server-side link management and browser-side deferred deep link matching",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "files": [
     "dist"
   ],
-  "homepage": "https://wildlinks.wilderbots.com/docs",
+  "homepage": "https://wildlinks.wilderbots.com",
   "repository": {
     "type": "git",
     "url": "https://github.com/wilderbots-droid/wildlinks-sdks.git"

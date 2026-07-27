@@ -1,11 +1,9 @@
 # WilderLinks iOS SDK
 
-Native Swift Package for resolving WilderLinks Universal Links and claiming
-deferred install matches.
+Use the iOS SDK to resolve Universal Links, recover deferred install matches,
+and exchange App Store attribution tokens.
 
-## Install
-
-Add this folder as a Swift Package dependency, or publish it from the SDK repo:
+## Add the package
 
 ```swift
 .package(url: "https://github.com/wilderbots-droid/wildlinks-sdks.git", from: "1.0.0")
@@ -17,7 +15,7 @@ Add this folder as a Swift Package dependency, or publish it from the SDK repo:
 let client = WildlinksClient(
   config: WildlinksConfig(
     baseURL: URL(string: "https://apilink.wilderbots.com")!,
-    domains: ["go.yourbrand.com"]
+    domains: ["go.wilderbots.com"]
   )
 )
 ```
@@ -27,23 +25,25 @@ let client = WildlinksClient(
 ```swift
 let result = await client.handleIncomingURL(url)
 if result.matched {
-  // result.deepLinkPayload contains the original campaign payload.
-  // result.openId is present when WilderLinks tracked this app open.
+  // result.destinationURL
+  // result.deepLinkPayload
+  // result.openId
 }
 ```
 
-## Deferred install match
-
-If your app receives a `dl_match_token`, exchange it directly:
+## Match a deferred install token
 
 ```swift
 let result = await client.matchDeferredToken("<32-char-token>")
 ```
 
-For App Store attribution, WilderLinks appends `ct=wl_<token>` to App Store
-fallback URLs. If your attribution provider or first-launch flow returns that
-campaign token, exchange it with:
+## Match App Store attribution
 
 ```swift
 let result = await client.matchInstallAttributionToken("wl_<token-from-provider>")
 ```
+
+## Support
+
+- Website: `https://wildlinks.wilderbots.com`
+- Contact: `https://wildlinks.wilderbots.com/contact`

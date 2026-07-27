@@ -1,7 +1,7 @@
 {
   "name": "@wilderbots/wildlinks-cli",
   "version": "0.1.0",
-  "description": "Command-line tools for WilderLink link management.",
+  "description": "Command-line tools for WilderLinks link operations, QR generation, and automation workflows.",
   "bin": {
     "wildlinks": "./bin/wildlinks.js",
     "wl": "./bin/wildlinks.js"
@@ -17,5 +17,20 @@
   "engines": {
     "node": ">=18"
   },
+  "homepage": "https://wildlinks.wilderbots.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wilderbots-droid/wildlinks-sdks.git"
+  },
+  "bugs": {
+    "url": "https://github.com/wilderbots-droid/wildlinks-sdks/issues"
+  },
+  "keywords": [
+    "deep-linking",
+    "url-shortener",
+    "qr-codes",
+    "cli",
+    "automation"
+  ],
   "license": "UNLICENSED"
 }

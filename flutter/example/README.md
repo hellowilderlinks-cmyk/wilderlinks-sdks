@@ -1,6 +1,13 @@
-# wildlinks_flutter_sdk example
+# WilderLinks Flutter example
 
-Minimal Flutter app showing `WildlinksSdk` + `WildlinksListener` end to end.
+This example app shows the full Flutter flow:
+
+- initialize WilderLinks
+- listen for incoming links
+- recover deferred installs
+- inspect matched payloads locally
+
+## Run the example
 
 ```bash
 cd example
@@ -8,10 +15,22 @@ flutter pub get
 flutter run
 ```
 
-Before running, edit `lib/main.dart` and set `baseUrl` to your deployed backend
-and `domains` to the branded domain(s) you configured in the dashboard.
+## Before you test
 
-To actually test deep link resolution without a real device link tap, you can
-manually copy a string like `dl_match_token=<32-char-hex-token>` onto your
-clipboard (matching a real `matchToken` from a `Click` record in your database),
-then hot-restart the app — `checkDeferredInstall` will pick it up.
+Update `lib/main.dart` with:
+
+- your API base URL
+- your branded WilderLinks domain
+
+The defaults should follow the same format used across the SDK docs:
+
+- API: `https://apilink.wilderbots.com`
+- domain: `https://go.wilderbots.com`
+
+## Best way to test
+
+For a real test, open a valid WilderLinks URL on a device that has your app
+installed or can install it fresh.
+
+If you are debugging deferred flow behavior locally, you can still simulate a
+match token and confirm the SDK plumbing before using a production tap.
