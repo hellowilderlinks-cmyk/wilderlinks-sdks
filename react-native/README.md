@@ -10,7 +10,7 @@ The React Native SDK helps your app handle:
 ## Install
 
 ```bash
-npm install @wilderbots/wildlinks-react-native
+npm install @wilderbots/wilderlinks-react-native
 npm install @react-native-clipboard/clipboard
 ```
 
@@ -27,7 +27,7 @@ You still need OS-level link configuration:
 ## Initialize once
 
 ```tsx
-import { initWildlinks, useWildlinks } from '@wilderbots/wildlinks-react-native';
+import { initWildlinks, useWildlinks } from '@wilderbots/wilderlinks-react-native';
 
 initWildlinks({
   baseUrl: 'https://apilink.wilderbots.com',
@@ -56,7 +56,7 @@ function App() {
 ## Create a smart link
 
 ```ts
-import { createWildlink } from '@wilderbots/wildlinks-react-native';
+import { createWildlink } from '@wilderbots/wilderlinks-react-native';
 
 const link = await createWildlink({
   defaultUrl: 'https://www.clientbrand.com/summer-sale',
@@ -71,7 +71,7 @@ console.log(link.shortUrl);
 ## Create a plain short link
 
 ```ts
-import { createShortLink } from '@wilderbots/wildlinks-react-native';
+import { createShortLink } from '@wilderbots/wilderlinks-react-native';
 
 const shortUrl = await createShortLink({
   defaultUrl: 'https://www.clientbrand.com/summer-sale',
@@ -81,7 +81,7 @@ const shortUrl = await createShortLink({
 ## Match install attribution
 
 ```ts
-import { matchInstallAttributionToken } from '@wilderbots/wildlinks-react-native';
+import { matchInstallAttributionToken } from '@wilderbots/wilderlinks-react-native';
 
 const result = await matchInstallAttributionToken(
   'https://apilink.wilderbots.com',

@@ -1,5 +1,5 @@
-name: wildlinks_flutter_sdk_example
-description: Example app demonstrating wildlinks_flutter_sdk usage.
+name: wilderlinks_flutter_sdk_example
+description: Example app demonstrating wilderlinks_flutter_sdk usage.
 publish_to: 'none'
 version: 1.0.0
 
@@ -10,7 +10,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  wildlinks_flutter_sdk:
+  wilderlinks_flutter_sdk:
     path: ../
 
 dev_dependencies:

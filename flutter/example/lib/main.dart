@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:wildlinks_flutter_sdk/wildlinks_flutter_sdk.dart';
+import 'package:wilderlinks_flutter_sdk/wilderlinks_flutter_sdk.dart';
 
 void main() {
   // Call this once, before runApp. Replace with your own API base URL and the

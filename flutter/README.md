@@ -14,7 +14,7 @@ Add the package:
 
 ```yaml
 dependencies:
-  wildlinks_flutter_sdk: ^1.0.6
+  wilderlinks_flutter_sdk: ^1.0.6
 ```
 
 Then run:
@@ -37,7 +37,7 @@ Those native settings are what allow the OS to hand the link into your app.
 ## Initialize once
 
 ```dart
-import 'package:wildlinks_flutter_sdk/wildlinks_flutter_sdk.dart';
+import 'package:wilderlinks_flutter_sdk/wilderlinks_flutter_sdk.dart';
 
 void main() {
   WildlinksSdk.init(const WildlinksConfig(

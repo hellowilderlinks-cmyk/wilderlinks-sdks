@@ -20,12 +20,12 @@
 
 ## 1.0.2
 
-- Fix the install instructions so apps only add `wildlinks_flutter_sdk`.
+- Fix the install instructions so apps only add `wilderlinks_flutter_sdk`.
 
 ## 1.0.1
 
 - Clean up the public README for pub.dev.
-- Update package documentation to use the published `wildlinks_flutter_sdk` dependency.
+- Update package documentation to use the published `wilderlinks_flutter_sdk` dependency.
 
 ## 1.0.0
 

@@ -1,4 +1,4 @@
-library wildlinks_flutter_sdk;
+library wilderlinks_flutter_sdk;
 
 export 'src/models.dart';
 export 'src/wildlinks_client.dart';

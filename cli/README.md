@@ -6,10 +6,19 @@ pipeline, or admin automation script.
 ## Install
 
 ```bash
-npm install -g @wilderbots/wildlinks-cli
+npm install -g @wilderbots/wilderlinks-cli
 ```
 
 ## Log in
+
+```bash
+wilderlinks login \
+  --api-base https://apilink.wilderbots.com \
+  --email ops@clientbrand.com \
+  --password '<password>'
+```
+
+Or use the short alias:
 
 ```bash
 wl login \
@@ -30,12 +39,12 @@ WILDLINKS_API_KEY=<server-api-key>
 ## Common commands
 
 ```bash
-wl orgs
-wl links list --limit 10
-wl links get <link-id>
-wl links create --url https://www.clientbrand.com/app --title "Launch"
-wl qr <link-id> --format png --out launch-qr.png --logo
-wl utm generate --url https://www.clientbrand.com/app --title "Summer Launch" --source instagram
+wilderlinks orgs
+wilderlinks links list --limit 10
+wilderlinks links get <link-id>
+wilderlinks links create --url https://www.clientbrand.com/app --title "Launch"
+wilderlinks qr <link-id> --format png --out launch-qr.png --logo
+wilderlinks utm generate --url https://www.clientbrand.com/app --title "Summer Launch" --source instagram
 ```
 
 ## Best use cases

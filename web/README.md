@@ -8,13 +8,13 @@ This package covers two client-facing use cases:
 ## Install
 
 ```bash
-npm install @wilderbots/wildlinks-sdk
+npm install @wilderbots/wilderlinks-sdk
 ```
 
 ## Create a short link from your backend
 
 ```ts
-import { WildlinksClient } from '@wilderbots/wildlinks-sdk';
+import { WildlinksClient } from '@wilderbots/wilderlinks-sdk';
 
 const wildlinks = new WildlinksClient({
   apiKey: process.env.DEEPLINK_API_KEY!,
@@ -44,7 +44,7 @@ console.log(link.shortUrl);
 ## Check a deferred match in the browser
 
 ```ts
-import { checkDeferredMatch } from '@wilderbots/wildlinks-sdk';
+import { checkDeferredMatch } from '@wilderbots/wilderlinks-sdk';
 
 const result = await checkDeferredMatch('https://apilink.wilderbots.com');
 
@@ -56,7 +56,7 @@ if (result.matched) {
 ## Match App Store attribution
 
 ```ts
-import { matchInstallAttributionToken } from '@wilderbots/wildlinks-sdk';
+import { matchInstallAttributionToken } from '@wilderbots/wilderlinks-sdk';
 
 const result = await matchInstallAttributionToken(
   'https://apilink.wilderbots.com',
