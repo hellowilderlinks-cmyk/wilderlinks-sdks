@@ -39,10 +39,12 @@ void main() {
     ));
     WildlinksSdk.setHttpClient(mockClient);
 
-    final resolved = await WildlinksSdk.handleIncomingUri(Uri.parse('https://go.yourbrand.com/promo'));
+    final resolved = await WildlinksSdk.handleIncomingUri(
+        Uri.parse('https://go.yourbrand.com/promo'));
 
     expect(resolved.matched, isTrue);
-    expect(resolved.deepLinkPayload, {'screen': 'offer', 'offerId': 'spring24'});
+    expect(
+        resolved.deepLinkPayload, {'screen': 'offer', 'offerId': 'spring24'});
     expect(resolved.destinationUrl, 'https://example.com/promo');
   });
 
@@ -53,7 +55,8 @@ void main() {
       final body = jsonDecode(request.body) as Map<String, dynamic>;
       expect(body['defaultUrl'], 'https://example.com/promo');
       expect(body['title'], 'Launch Offer');
-      expect(body['deepLinkPayload'], {'screen': 'offer', 'offerId': 'spring24'});
+      expect(
+          body['deepLinkPayload'], {'screen': 'offer', 'offerId': 'spring24'});
 
       return http.Response(
         jsonEncode({

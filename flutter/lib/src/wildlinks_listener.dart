@@ -22,7 +22,8 @@ import 'models.dart';
 /// ```
 class WildlinksListener {
   final AppLinks _appLinks = AppLinks();
-  final StreamController<ResolvedLink> _controller = StreamController<ResolvedLink>.broadcast();
+  final StreamController<ResolvedLink> _controller =
+      StreamController<ResolvedLink>.broadcast();
   StreamSubscription<Uri>? _subscription;
   bool _checkedDeferred = false;
 

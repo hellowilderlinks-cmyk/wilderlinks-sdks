@@ -19,7 +19,8 @@ class ExampleApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Deeplink SDK Example',
-      theme: ThemeData(colorSchemeSeed: const Color(0xFFF5A623), useMaterial3: true),
+      theme: ThemeData(
+          colorSchemeSeed: const Color(0xFFF5A623), useMaterial3: true),
       home: const HomeScreen(),
     );
   }
@@ -46,7 +47,9 @@ class _HomeScreenState extends State<HomeScreen> {
     _listener.stream.listen((resolved) {
       setState(() {
         _lastResolved = resolved;
-        _status = resolved.matched ? 'Matched a smart link!' : 'No match (${resolved.error ?? 'n/a'})';
+        _status = resolved.matched
+            ? 'Matched a smart link!'
+            : 'No match (${resolved.error ?? 'n/a'})';
       });
 
       if (resolved.matched && resolved.deepLinkPayload != null) {
@@ -75,7 +78,9 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(_status, style: Theme.of(context).textTheme.titleMedium, textAlign: TextAlign.center),
+              Text(_status,
+                  style: Theme.of(context).textTheme.titleMedium,
+                  textAlign: TextAlign.center),
               const SizedBox(height: 16),
               if (_lastResolved != null) ...[
                 Text('Destination: ${_lastResolved!.destinationUrl ?? '—'}'),

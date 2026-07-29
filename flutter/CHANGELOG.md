@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.7
+
+- Update repository and homepage metadata URLs to point to package subdirectory.
+- Verified publisher domain integration and code formatting improvements.
+
 ## 1.0.6
 
 - Add a dedicated `createShortLink()` example for plain short URLs.
