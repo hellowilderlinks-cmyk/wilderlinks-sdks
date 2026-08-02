@@ -4,6 +4,9 @@ build/
 coverage/
 *.log
 
+# Local tooling artifacts
+.codebase-memory/
+
 # Web / React Native package artifacts
 web/node_modules/
 web/dist/
