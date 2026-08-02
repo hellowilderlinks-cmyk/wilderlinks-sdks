@@ -48,6 +48,19 @@ Examples use:
 
 Replace that with your own branded routing domain when you configure your app.
 
+## Before production SDK testing
+
+Register or sign in at `https://wilderlinks.wilderbots.com`, then create your
+workspace and app profile.
+
+- Android apps need the package name and SHA-256 signing certificate fingerprint
+  saved in the dashboard, plus an `android:autoVerify="true"` App Links intent
+  filter in the app.
+- iOS apps need the bundle ID, Apple Team ID, and App Store URL saved in the
+  dashboard, plus the Associated Domains entitlement in Xcode.
+- Custom domains are optional. If you use one, add it in the dashboard and
+  follow the generated CNAME/TXT DNS records before using it in SDK config.
+
 ## What the SDKs handle
 
 Depending on the platform, the SDKs can help with:

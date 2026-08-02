@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.8
+
+- Replace placeholder Flutter SDK documentation URLs with real WilderLinks URLs.
+- Document dashboard registration, Android/iOS app profile configuration, and
+  optional custom-domain setup for production Flutter SDK integrations.
+
 ## 1.0.7
 
 - Update repository and homepage metadata URLs to point to package subdirectory.

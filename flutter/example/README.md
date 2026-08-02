@@ -21,11 +21,14 @@ Update `lib/main.dart` with:
 
 - your API base URL
 - your branded WilderLinks domain
+- your Android package/SHA-256 and iOS bundle/Team ID app profile settings in
+  the WilderLinks dashboard
 
 The defaults should follow the same format used across the SDK docs:
 
 - API: `https://apilink.wilderbots.com`
 - domain: `https://go.wilderbots.com`
+- dashboard/register: `https://wilderlinks.wilderbots.com`
 
 ## Best way to test
 

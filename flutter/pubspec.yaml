@@ -2,7 +2,7 @@ name: wilderlinks_flutter_sdk
 description: >
   Flutter SDK for the WilderLinks smart link platform - Universal Link / App Link
   resolution and deferred deep link matching for apps built with Flutter.
-version: 1.0.7
+version: 1.0.8
 homepage: https://github.com/wilderbots-droid/wildlinks-sdks/tree/main/flutter
 repository: https://github.com/wilderbots-droid/wildlinks-sdks/tree/main/flutter
 issue_tracker: https://github.com/wilderbots-droid/wildlinks-sdks/issues

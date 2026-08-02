@@ -27,10 +27,19 @@ flutter pub get
 
 This SDK does not replace iOS Associated Domains or Android App Links setup.
 
-- **iOS**: add your branded domain in Xcode using `applinks:go.wilderbots.com`
-  or your own WilderLinks domain.
-- **Android**: add an `intent-filter` with `android:autoVerify="true"` for your
-  branded domain in `AndroidManifest.xml`.
+- **Register/configure app profiles**: sign in at
+  `https://wilderlinks.wilderbots.com` and create or select your workspace.
+  Add each mobile app profile there before testing production links.
+- **Android**: in the WilderLinks dashboard, add the Android package name and
+  SHA-256 signing certificate fingerprint for your Flutter app. In Flutter,
+  add an `intent-filter` with `android:autoVerify="true"` for your WilderLinks
+  domain in `android/app/src/main/AndroidManifest.xml`.
+- **iOS**: in the WilderLinks dashboard, add the iOS bundle ID, Apple Team ID,
+  and App Store URL. In Xcode, enable Associated Domains and add
+  `applinks:go.wilderbots.com` or your own verified WilderLinks domain.
+- **Custom domain**: optional, but recommended for branded production links.
+  Add it in the WilderLinks dashboard and follow the generated CNAME/TXT DNS
+  records. After verification, use that host in `domains`.
 
 Those native settings are what allow the OS to hand the link into your app.
 
@@ -88,7 +97,7 @@ Use this when you only need a short URL that redirects to a long destination.
 
 ```dart
 final shortUrl = await WildlinksSdk.createShortLink(
-  'https://www.clientbrand.com/summer-sale',
+  'https://wildlinks.wilderbots.com/pricing',
 );
 ```
 
@@ -98,12 +107,12 @@ Use this when your app should receive structured routing data.
 
 ```dart
 final link = await WildlinksSdk.createDeepLink(
-  defaultUrl: 'https://www.clientbrand.com/summer-sale',
-  title: 'Summer sale',
+  defaultUrl: 'https://wildlinks.wilderbots.com/features/flutter-sdk',
+  title: 'Flutter SDK',
   pathPrefix: 'x4I9',
   deepLinkPayload: {
-    'screen': 'offer',
-    'offerId': 'summer24',
+    'screen': 'sdk',
+    'sdk': 'flutter',
   },
 );
 
@@ -126,9 +135,13 @@ final result = await WildlinksSdk.matchInstallAttributionToken(
 
 - API base: `https://apilink.wilderbots.com`
 - Branded domain: `https://go.wilderbots.com`
-- Product site example: `https://www.clientbrand.com/summer-sale`
+- Product URL example: `https://wildlinks.wilderbots.com/features/flutter-sdk`
+- Registration/dashboard: `https://wilderlinks.wilderbots.com`
+- Dashboard app setup: `https://wilderlinks.wilderbots.com/settings`
+- Custom domain setup: `https://wilderlinks.wilderbots.com/domains`
 
 ## Support
 
 - Website: `https://wildlinks.wilderbots.com`
+- Dashboard: `https://wilderlinks.wilderbots.com`
 - Contact: `https://wildlinks.wilderbots.com/contact`
