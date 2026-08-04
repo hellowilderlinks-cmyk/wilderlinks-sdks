@@ -14,7 +14,7 @@ Add the package:
 
 ```yaml
 dependencies:
-  wilderlinks_flutter_sdk: ^1.0.6
+  wilderlinks_flutter_sdk: ^1.0.9
 ```
 
 Then run:

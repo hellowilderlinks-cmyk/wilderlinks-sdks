@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.9
+
+- Update pub.dev package metadata to the public WilderLinks SDK repository.
+
 ## 1.0.8
 
 - Replace placeholder Flutter SDK documentation URLs with real WilderLinks URLs.
