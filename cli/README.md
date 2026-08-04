@@ -13,7 +13,7 @@ npm install -g @wilderbots/wilderlinks-cli
 
 ```bash
 wilderlinks login \
-  --api-base https://apilink.wilderbots.com \
+  --api-base https://api.wilderlinks.space \
   --email ops@clientbrand.com \
   --password '<password>'
 ```
@@ -22,7 +22,7 @@ Or use the short alias:
 
 ```bash
 wl login \
-  --api-base https://apilink.wilderbots.com \
+  --api-base https://api.wilderlinks.space \
   --email ops@clientbrand.com \
   --password '<password>'
 ```
@@ -30,7 +30,7 @@ wl login \
 ## Configure with environment variables
 
 ```bash
-WILDERLINKS_API_BASE=https://apilink.wilderbots.com
+WILDERLINKS_API_BASE=https://api.wilderlinks.space
 WILDERLINKS_TOKEN=<dashboard-jwt>
 WILDERLINKS_ORG_ID=<organization-id>
 WILDERLINKS_API_KEY=<server-api-key>

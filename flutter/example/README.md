@@ -26,8 +26,8 @@ Update `lib/main.dart` with:
 
 The defaults should follow the same format used across the SDK docs:
 
-- API: `https://apilink.wilderbots.com`
-- domain: `https://go.wilderbots.com`
+- API: `https://api.wilderlinks.space`
+- domain: `https://go.wilderlinks.space`
 - dashboard/register: `https://wilderlinks.space`
 
 ## Best way to test

@@ -37,7 +37,7 @@ final class WilderlinksSDKTests: XCTestCase {
 
     let client = WilderlinksClient(
       config: WilderlinksConfig(
-        baseURL: URL(string: "https://apilink.wilderbots.com")!,
+        baseURL: URL(string: "https://api.wilderlinks.space")!,
         domains: ["go.yourbrand.com"]
       ),
       session: session
@@ -58,7 +58,7 @@ final class WilderlinksSDKTests: XCTestCase {
   func testHandleIncomingURLIgnoresUnknownDomain() async {
     let client = WilderlinksClient(
       config: WilderlinksConfig(
-        baseURL: URL(string: "https://apilink.wilderbots.com")!,
+        baseURL: URL(string: "https://api.wilderlinks.space")!,
         domains: ["go.yourbrand.com"]
       ),
       session: mockSession { _ in XCTFail("Unknown domains should not call the API"); return jsonResponse("{}") }
@@ -89,7 +89,7 @@ final class WilderlinksSDKTests: XCTestCase {
 
     let client = WilderlinksClient(
       config: WilderlinksConfig(
-        baseURL: URL(string: "https://apilink.wilderbots.com")!,
+        baseURL: URL(string: "https://api.wilderlinks.space")!,
         domains: ["go.yourbrand.com"]
       ),
       session: session
@@ -120,7 +120,7 @@ final class WilderlinksSDKTests: XCTestCase {
 
     let client = WilderlinksClient(
       config: WilderlinksConfig(
-        baseURL: URL(string: "https://apilink.wilderbots.com")!,
+        baseURL: URL(string: "https://api.wilderlinks.space")!,
         domains: ["go.yourbrand.com"]
       ),
       session: session
@@ -172,7 +172,7 @@ private func mockSession(_ handler: @escaping (URLRequest) throws -> (HTTPURLRes
 
 private func jsonResponse(_ body: String, statusCode: Int = 200) -> (HTTPURLResponse, Data) {
   let response = HTTPURLResponse(
-    url: URL(string: "https://apilink.wilderbots.com")!,
+    url: URL(string: "https://api.wilderlinks.space")!,
     statusCode: statusCode,
     httpVersion: nil,
     headerFields: ["Content-Type": "application/json"]

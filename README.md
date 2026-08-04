@@ -35,7 +35,7 @@ This folder contains the official SDKs for different client stacks.
 
 Most SDK examples in this repo use:
 
-`https://apilink.wilderbots.com`
+`https://api.wilderlinks.space`
 
 That is the hosted WilderLinks API base used by the examples. If your team runs a
 different environment, replace it with your own API origin.
@@ -44,7 +44,7 @@ different environment, replace it with your own API origin.
 
 Examples use:
 
-`https://go.wilderbots.com`
+`https://go.wilderlinks.space`
 
 Replace that with your own branded routing domain when you configure your app.
 

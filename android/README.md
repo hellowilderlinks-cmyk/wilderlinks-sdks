@@ -8,8 +8,8 @@ exchange install attribution tokens.
 ```kotlin
 Wilderlinks.init(
   WilderlinksConfig(
-    baseUrl = "https://apilink.wilderbots.com",
-    domains = listOf("go.wilderbots.com")
+    baseUrl = "https://api.wilderlinks.space",
+    domains = listOf("go.wilderlinks.space")
   )
 )
 ```
@@ -35,7 +35,7 @@ val result = Wilderlinks.checkDeferredInstall(context)
 
 ```kotlin
 val result = Wilderlinks.matchDeferredToken(
-  "https://apilink.wilderbots.com",
+  "https://api.wilderlinks.space",
   "<32-char-token>"
 )
 ```
@@ -44,7 +44,7 @@ val result = Wilderlinks.matchDeferredToken(
 
 ```kotlin
 val result = Wilderlinks.matchInstallAttributionToken(
-  "https://apilink.wilderbots.com",
+  "https://api.wilderlinks.space",
   "wl_<token-from-provider>"
 )
 ```

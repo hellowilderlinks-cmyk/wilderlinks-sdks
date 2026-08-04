@@ -21,7 +21,7 @@ The clipboard dependency is only needed for deferred-match recovery flows.
 You still need OS-level link configuration:
 
 - **iOS**: add your branded domain in Associated Domains, for example
-  `applinks:go.wilderbots.com`
+  `applinks:go.wilderlinks.space`
 - **Android**: add an App Links `intent-filter` for your branded domain
 
 ## Initialize once
@@ -30,8 +30,8 @@ You still need OS-level link configuration:
 import { initWilderlinks, useWilderlinks } from '@wilderbots/wilderlinks-react-native';
 
 initWilderlinks({
-  baseUrl: 'https://apilink.wilderbots.com',
-  domains: ['go.wilderbots.com'],
+  baseUrl: 'https://api.wilderlinks.space',
+  domains: ['go.wilderlinks.space'],
   apiKey: 'dlk_xxx',
 });
 ```
@@ -84,7 +84,7 @@ const shortUrl = await createShortLink({
 import { matchInstallAttributionToken } from '@wilderbots/wilderlinks-react-native';
 
 const result = await matchInstallAttributionToken(
-  'https://apilink.wilderbots.com',
+  'https://api.wilderlinks.space',
   'wl_<token-from-provider>',
   'app-store-campaign-token'
 );

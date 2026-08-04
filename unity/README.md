@@ -21,8 +21,8 @@ https://github.com/hellowilderlinks-cmyk/wilderlinks-sdks.git?path=/unity
 using Wilderbots.Wilderlinks;
 
 WilderlinksClient.Init(new WilderlinksConfig(
-    baseUrl: "https://apilink.wilderbots.com",
-    domains: new[] { "go.wilderbots.com" },
+    baseUrl: "https://api.wilderlinks.space",
+    domains: new[] { "go.wilderlinks.space" },
     apiKey: "dlk_xxx"
 ));
 ```

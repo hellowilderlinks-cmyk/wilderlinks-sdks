@@ -18,7 +18,7 @@ import { WilderlinksClient } from '@wilderbots/wilderlinks-sdk';
 
 const wilderlinks = new WilderlinksClient({
   apiKey: process.env.DEEPLINK_API_KEY!,
-  baseUrl: 'https://apilink.wilderbots.com',
+  baseUrl: 'https://api.wilderlinks.space',
 });
 
 const shortUrl = await wilderlinks.createShortLink({
@@ -46,7 +46,7 @@ console.log(link.shortUrl);
 ```ts
 import { checkDeferredMatch } from '@wilderbots/wilderlinks-sdk';
 
-const result = await checkDeferredMatch('https://apilink.wilderbots.com');
+const result = await checkDeferredMatch('https://api.wilderlinks.space');
 
 if (result.matched) {
   console.log(result.deepLinkPayload);
@@ -59,7 +59,7 @@ if (result.matched) {
 import { matchInstallAttributionToken } from '@wilderbots/wilderlinks-sdk';
 
 const result = await matchInstallAttributionToken(
-  'https://apilink.wilderbots.com',
+  'https://api.wilderlinks.space',
   'wl_<token-from-provider>',
   'app-store-campaign-token'
 );

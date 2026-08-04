@@ -36,7 +36,7 @@ This SDK does not replace iOS Associated Domains or Android App Links setup.
   domain in `android/app/src/main/AndroidManifest.xml`.
 - **iOS**: in the WilderLinks dashboard, add the iOS bundle ID, Apple Team ID,
   and App Store URL. In Xcode, enable Associated Domains and add
-  `applinks:go.wilderbots.com` or your own verified WilderLinks domain.
+  `applinks:go.wilderlinks.space` or your own verified WilderLinks domain.
 - **Custom domain**: optional, but recommended for branded production links.
   Add it in the WilderLinks dashboard and follow the generated CNAME/TXT DNS
   records. After verification, use that host in `domains`.
@@ -50,8 +50,8 @@ import 'package:wilderlinks_flutter_sdk/wilderlinks_flutter_sdk.dart';
 
 void main() {
   WilderlinksSdk.init(const WilderlinksConfig(
-    baseUrl: 'https://apilink.wilderbots.com',
-    domains: ['go.wilderbots.com'],
+    baseUrl: 'https://api.wilderlinks.space',
+    domains: ['go.wilderlinks.space'],
   ));
   runApp(const MyApp());
 }
@@ -125,7 +125,7 @@ If your iOS install attribution flow returns a `wl_<token>` value, exchange it:
 
 ```dart
 final result = await WilderlinksSdk.matchInstallAttributionToken(
-  'https://apilink.wilderbots.com',
+  'https://api.wilderlinks.space',
   'wl_<token-from-provider>',
   provider: 'app-store-campaign-token',
 );
@@ -133,8 +133,8 @@ final result = await WilderlinksSdk.matchInstallAttributionToken(
 
 ## Example URLs used in docs
 
-- API base: `https://apilink.wilderbots.com`
-- Branded domain: `https://go.wilderbots.com`
+- API base: `https://api.wilderlinks.space`
+- Branded domain: `https://go.wilderlinks.space`
 - Product URL example: `https://wilderlinks.space/features/flutter-sdk`
 - Registration/dashboard: `https://wilderlinks.space`
 - Dashboard app setup: `https://wilderlinks.space/settings`
