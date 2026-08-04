@@ -40,13 +40,15 @@ Most SDK examples in this repo use:
 That is the hosted WilderLinks API base used by the examples. If your team runs a
 different environment, replace it with your own API origin.
 
-## Shared branded-domain example
+## Shared link-domain example
 
 Examples use:
 
-`https://go.wilderlinks.space`
+`https://your-workspace.wilderlinks.space`
 
-Replace that with your own branded routing domain when you configure your app.
+Replace that with the default domain shown in your workspace or with your own
+verified custom domain when you configure your app. If you add a custom domain,
+its DNS CNAME should point to `go.wilderlinks.space`.
 
 ## Before production SDK testing
 

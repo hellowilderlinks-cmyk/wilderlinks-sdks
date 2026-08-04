@@ -22,10 +22,14 @@ using Wilderbots.Wilderlinks;
 
 WilderlinksClient.Init(new WilderlinksConfig(
     baseUrl: "https://api.wilderlinks.space",
-    domains: new[] { "go.wilderlinks.space" },
+    domains: new[] { "your-workspace.wilderlinks.space" },
     apiKey: "dlk_xxx"
 ));
 ```
+
+Use the default domain shown in your WilderLinks workspace, such as
+`your-workspace.wilderlinks.space`, or a verified custom domain. Custom domain
+DNS should CNAME to `go.wilderlinks.space`.
 
 ## Resolve a link
 

@@ -16,7 +16,7 @@
   "bugs": {
     "url": "https://github.com/hellowilderlinks-cmyk/wilderlinks-sdks/issues"
   },
-  "author": "Wilderbots <wilderbots@gmail.com>",
+  "author": "WilderLinks <hellowilderlinks@gmail.com>",
   "scripts": {
     "build": "tsup src/index.ts --format cjs,esm --dts --external react --external react-native",
     "dev": "tsup src/index.ts --format cjs,esm --dts --watch --external react --external react-native"

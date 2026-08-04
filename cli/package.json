@@ -32,5 +32,8 @@
     "cli",
     "automation"
   ],
-  "license": "UNLICENSED"
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  }
 }

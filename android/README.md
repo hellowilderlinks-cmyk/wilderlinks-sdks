@@ -9,7 +9,7 @@ exchange install attribution tokens.
 Wilderlinks.init(
   WilderlinksConfig(
     baseUrl = "https://api.wilderlinks.space",
-    domains = listOf("go.wilderlinks.space")
+    domains = listOf("your-workspace.wilderlinks.space")
   )
 )
 ```

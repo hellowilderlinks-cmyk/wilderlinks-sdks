@@ -15,7 +15,7 @@ and exchange App Store attribution tokens.
 let client = WilderlinksClient(
   config: WilderlinksConfig(
     baseURL: URL(string: "https://api.wilderlinks.space")!,
-    domains: ["go.wilderlinks.space"]
+    domains: ["your-workspace.wilderlinks.space"]
   )
 )
 ```

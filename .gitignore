@@ -32,4 +32,5 @@ android/build/
 android/wilderlinks/build/
 
 # Swift Package Manager artifacts
+.build/
 ios/.build/

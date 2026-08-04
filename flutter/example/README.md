@@ -27,7 +27,8 @@ Update `lib/main.dart` with:
 The defaults should follow the same format used across the SDK docs:
 
 - API: `https://api.wilderlinks.space`
-- domain: `https://go.wilderlinks.space`
+- domain: `https://your-workspace.wilderlinks.space`
+- custom domain CNAME target: `go.wilderlinks.space`
 - dashboard/register: `https://wilderlinks.space`
 
 ## Best way to test

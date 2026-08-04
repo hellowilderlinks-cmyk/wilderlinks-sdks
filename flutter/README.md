@@ -36,10 +36,11 @@ This SDK does not replace iOS Associated Domains or Android App Links setup.
   domain in `android/app/src/main/AndroidManifest.xml`.
 - **iOS**: in the WilderLinks dashboard, add the iOS bundle ID, Apple Team ID,
   and App Store URL. In Xcode, enable Associated Domains and add
-  `applinks:go.wilderlinks.space` or your own verified WilderLinks domain.
+  `applinks:your-workspace.wilderlinks.space` or your own verified WilderLinks domain.
 - **Custom domain**: optional, but recommended for branded production links.
   Add it in the WilderLinks dashboard and follow the generated CNAME/TXT DNS
-  records. After verification, use that host in `domains`.
+  records. The custom domain CNAME target is `go.wilderlinks.space`. After
+  verification, use that custom host in `domains`.
 
 Those native settings are what allow the OS to hand the link into your app.
 
@@ -51,7 +52,7 @@ import 'package:wilderlinks_flutter_sdk/wilderlinks_flutter_sdk.dart';
 void main() {
   WilderlinksSdk.init(const WilderlinksConfig(
     baseUrl: 'https://api.wilderlinks.space',
-    domains: ['go.wilderlinks.space'],
+    domains: ['your-workspace.wilderlinks.space'],
   ));
   runApp(const MyApp());
 }
@@ -134,7 +135,8 @@ final result = await WilderlinksSdk.matchInstallAttributionToken(
 ## Example URLs used in docs
 
 - API base: `https://api.wilderlinks.space`
-- Branded domain: `https://go.wilderlinks.space`
+- Workspace default domain: `https://your-workspace.wilderlinks.space`
+- Custom domain CNAME target: `go.wilderlinks.space`
 - Product URL example: `https://wilderlinks.space/features/flutter-sdk`
 - Registration/dashboard: `https://wilderlinks.space`
 - Dashboard app setup: `https://wilderlinks.space/settings`

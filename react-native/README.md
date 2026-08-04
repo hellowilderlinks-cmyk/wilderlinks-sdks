@@ -20,9 +20,13 @@ The clipboard dependency is only needed for deferred-match recovery flows.
 
 You still need OS-level link configuration:
 
-- **iOS**: add your branded domain in Associated Domains, for example
-  `applinks:go.wilderlinks.space`
+- **iOS**: add your workspace or branded domain in Associated Domains, for
+  example `applinks:your-workspace.wilderlinks.space`
 - **Android**: add an App Links `intent-filter` for your branded domain
+
+Use the default domain shown in your WilderLinks workspace, such as
+`your-workspace.wilderlinks.space`, or a verified custom domain. Custom domain
+DNS should CNAME to `go.wilderlinks.space`.
 
 ## Initialize once
 
@@ -31,7 +35,7 @@ import { initWilderlinks, useWilderlinks } from '@wilderbots/wilderlinks-react-n
 
 initWilderlinks({
   baseUrl: 'https://api.wilderlinks.space',
-  domains: ['go.wilderlinks.space'],
+  domains: ['your-workspace.wilderlinks.space'],
   apiKey: 'dlk_xxx',
 });
 ```

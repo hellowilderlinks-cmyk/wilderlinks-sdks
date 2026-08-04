@@ -5,8 +5,8 @@
   "description": "Unity SDK for resolving WilderLinks deep links, matching deferred installs, creating smart links, and tracking app events.",
   "unity": "2021.3",
   "author": {
-    "name": "Wilderbots",
-    "url": "https://wilderbots.com"
+    "name": "WilderLinks",
+    "url": "https://wilderlinks.space"
   },
   "keywords": [
     "deeplink",
