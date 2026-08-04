@@ -6,7 +6,7 @@ pipeline, or admin automation script.
 ## Install
 
 ```bash
-npm install -g @wilderbots/wilderlinks-cli
+npm install -g @wilderlinks/wilderlinks-cli
 ```
 
 ## Log in

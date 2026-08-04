@@ -10,7 +10,7 @@ The React Native SDK helps your app handle:
 ## Install
 
 ```bash
-npm install @wilderbots/wilderlinks-react-native
+npm install @wilderlinks/wilderlinks-react-native
 npm install @react-native-clipboard/clipboard
 ```
 
@@ -31,7 +31,7 @@ DNS should CNAME to `go.wilderlinks.space`.
 ## Initialize once
 
 ```tsx
-import { initWilderlinks, useWilderlinks } from '@wilderbots/wilderlinks-react-native';
+import { initWilderlinks, useWilderlinks } from '@wilderlinks/wilderlinks-react-native';
 
 initWilderlinks({
   baseUrl: 'https://api.wilderlinks.space',
@@ -60,7 +60,7 @@ function App() {
 ## Create a smart link
 
 ```ts
-import { createWildlink } from '@wilderbots/wilderlinks-react-native';
+import { createWildlink } from '@wilderlinks/wilderlinks-react-native';
 
 const link = await createWildlink({
   defaultUrl: 'https://www.clientbrand.com/summer-sale',
@@ -75,7 +75,7 @@ console.log(link.shortUrl);
 ## Create a plain short link
 
 ```ts
-import { createShortLink } from '@wilderbots/wilderlinks-react-native';
+import { createShortLink } from '@wilderlinks/wilderlinks-react-native';
 
 const shortUrl = await createShortLink({
   defaultUrl: 'https://www.clientbrand.com/summer-sale',
@@ -85,7 +85,7 @@ const shortUrl = await createShortLink({
 ## Match install attribution
 
 ```ts
-import { matchInstallAttributionToken } from '@wilderbots/wilderlinks-react-native';
+import { matchInstallAttributionToken } from '@wilderlinks/wilderlinks-react-native';
 
 const result = await matchInstallAttributionToken(
   'https://api.wilderlinks.space',

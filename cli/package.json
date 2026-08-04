@@ -1,5 +1,5 @@
 {
-  "name": "@wilderbots/wilderlinks-cli",
+  "name": "@wilderlinks/wilderlinks-cli",
   "version": "0.1.2",
   "description": "Command-line tools for WilderLinks link operations, QR generation, and automation workflows.",
   "author": "WilderLinks <hellowilderlinks@gmail.com>",
