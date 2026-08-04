@@ -28,7 +28,7 @@ The defaults should follow the same format used across the SDK docs:
 
 - API: `https://apilink.wilderbots.com`
 - domain: `https://go.wilderbots.com`
-- dashboard/register: `https://wilderlinks.wilderbots.com`
+- dashboard/register: `https://wilderlinks.space`
 
 ## Best way to test
 

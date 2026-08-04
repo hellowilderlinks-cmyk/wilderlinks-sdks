@@ -56,5 +56,5 @@ wilderlinks utm generate --url https://www.clientbrand.com/app --title "Summer L
 
 ## Support
 
-- Website: `https://wilderlinks.wilderbots.com`
-- Contact: `https://wilderlinks.wilderbots.com/contact`
+- Website: `https://wilderlinks.space`
+- Contact: `https://wilderlinks.space/contact`

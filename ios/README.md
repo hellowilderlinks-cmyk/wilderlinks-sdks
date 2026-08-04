@@ -45,5 +45,5 @@ let result = await client.matchInstallAttributionToken("wl_<token-from-provider>
 
 ## Support
 
-- Website: `https://wilderlinks.wilderbots.com`
-- Contact: `https://wilderlinks.wilderbots.com/contact`
+- Website: `https://wilderlinks.space`
+- Contact: `https://wilderlinks.space/contact`

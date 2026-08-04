@@ -17,7 +17,7 @@
   "engines": {
     "node": ">=18"
   },
-  "homepage": "https://wilderlinks.wilderbots.com",
+  "homepage": "https://wilderlinks.space",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/hellowilderlinks-cmyk/wilderlinks-sdks.git"

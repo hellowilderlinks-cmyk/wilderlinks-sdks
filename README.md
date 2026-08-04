@@ -25,10 +25,10 @@ This folder contains the official SDKs for different client stacks.
 
 ## Product links
 
-- Website: `https://wilderlinks.wilderbots.com`
-- Dashboard: `https://wilderlinks.wilderbots.com`
-- Pricing: `https://wilderlinks.wilderbots.com/pricing`
-- Contact: `https://wilderlinks.wilderbots.com/contact`
+- Website: `https://wilderlinks.space`
+- Dashboard: `https://wilderlinks.space`
+- Pricing: `https://wilderlinks.space/pricing`
+- Contact: `https://wilderlinks.space/contact`
 - SDK repository: `https://github.com/hellowilderlinks-cmyk/wilderlinks-sdks`
 
 ## Shared API base
@@ -50,7 +50,7 @@ Replace that with your own branded routing domain when you configure your app.
 
 ## Before production SDK testing
 
-Register or sign in at `https://wilderlinks.wilderbots.com`, then create your
+Register or sign in at `https://wilderlinks.space`, then create your
 workspace and app profile.
 
 - Android apps need the package name and SHA-256 signing certificate fingerprint

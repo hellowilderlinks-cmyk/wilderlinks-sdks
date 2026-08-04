@@ -28,7 +28,7 @@ flutter pub get
 This SDK does not replace iOS Associated Domains or Android App Links setup.
 
 - **Register/configure app profiles**: sign in at
-  `https://wilderlinks.wilderbots.com` and create or select your workspace.
+  `https://wilderlinks.space` and create or select your workspace.
   Add each mobile app profile there before testing production links.
 - **Android**: in the WilderLinks dashboard, add the Android package name and
   SHA-256 signing certificate fingerprint for your Flutter app. In Flutter,
@@ -97,7 +97,7 @@ Use this when you only need a short URL that redirects to a long destination.
 
 ```dart
 final shortUrl = await WilderlinksSdk.createShortLink(
-  'https://wilderlinks.wilderbots.com/pricing',
+  'https://wilderlinks.space/pricing',
 );
 ```
 
@@ -107,7 +107,7 @@ Use this when your app should receive structured routing data.
 
 ```dart
 final link = await WilderlinksSdk.createDeepLink(
-  defaultUrl: 'https://wilderlinks.wilderbots.com/features/flutter-sdk',
+  defaultUrl: 'https://wilderlinks.space/features/flutter-sdk',
   title: 'Flutter SDK',
   pathPrefix: 'x4I9',
   deepLinkPayload: {
@@ -135,13 +135,13 @@ final result = await WilderlinksSdk.matchInstallAttributionToken(
 
 - API base: `https://apilink.wilderbots.com`
 - Branded domain: `https://go.wilderbots.com`
-- Product URL example: `https://wilderlinks.wilderbots.com/features/flutter-sdk`
-- Registration/dashboard: `https://wilderlinks.wilderbots.com`
-- Dashboard app setup: `https://wilderlinks.wilderbots.com/settings`
-- Custom domain setup: `https://wilderlinks.wilderbots.com/domains`
+- Product URL example: `https://wilderlinks.space/features/flutter-sdk`
+- Registration/dashboard: `https://wilderlinks.space`
+- Dashboard app setup: `https://wilderlinks.space/settings`
+- Custom domain setup: `https://wilderlinks.space/domains`
 
 ## Support
 
-- Website: `https://wilderlinks.wilderbots.com`
-- Dashboard: `https://wilderlinks.wilderbots.com`
-- Contact: `https://wilderlinks.wilderbots.com/contact`
+- Website: `https://wilderlinks.space`
+- Dashboard: `https://wilderlinks.space`
+- Contact: `https://wilderlinks.space/contact`
