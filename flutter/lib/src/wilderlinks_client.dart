@@ -8,27 +8,27 @@ import 'package:http/http.dart' as http;
 
 import 'models.dart';
 
-/// Configuration for [WildlinksSdk]. Call [WildlinksSdk.init] once at app startup,
+/// Configuration for [WilderlinksSdk]. Call [WilderlinksSdk.init] once at app startup,
 /// before you check for incoming links or a deferred install match.
-class WildlinksConfig {
+class WilderlinksConfig {
   final String baseUrl; // e.g. "https://api.yourservice.in"
   final List<String>
       domains; // hostnames this app owns, e.g. ["go.yourbrand.com"]
   final String? apiKey; // API key for creating smart links from the app
 
-  const WildlinksConfig(
+  const WilderlinksConfig(
       {required this.baseUrl, required this.domains, this.apiKey});
 }
 
-/// Entry point for the WildLinks Flutter SDK. All methods are static so you can
+/// Entry point for the WilderLinks Flutter SDK. All methods are static so you can
 /// call them from anywhere in your app after [init] has run once.
-class WildlinksSdk {
-  WildlinksSdk._();
+class WilderlinksSdk {
+  WilderlinksSdk._();
 
-  static WildlinksConfig? _config;
+  static WilderlinksConfig? _config;
   static http.Client _httpClient = http.Client();
 
-  static void init(WildlinksConfig config) {
+  static void init(WilderlinksConfig config) {
     _config = config;
   }
 
@@ -41,11 +41,11 @@ class WildlinksSdk {
     _httpClient = http.Client();
   }
 
-  static WildlinksConfig _requireConfig() {
+  static WilderlinksConfig _requireConfig() {
     final cfg = _config;
     if (cfg == null) {
       throw StateError(
-        'WildlinksSdk not initialized - call WildlinksSdk.init(WildlinksConfig(...)) once at app startup',
+        'WilderLinks SDK not initialized - call WilderlinksSdk.init(WilderlinksConfig(...)) once at app startup',
       );
     }
     return cfg;
@@ -213,7 +213,7 @@ class WildlinksSdk {
   }
 
   /// Create a new smart link on the service and return the full link object.
-  /// Requires [apiKey] in [WildlinksConfig].
+  /// Requires [apiKey] in [WilderlinksConfig].
   static Future<LinkModel> createLink({
     required String defaultUrl,
     String? domainId,
@@ -237,7 +237,7 @@ class WildlinksSdk {
     final cfg = _requireConfig();
     if (cfg.apiKey == null || cfg.apiKey!.isEmpty) {
       throw StateError(
-          'API key is required to create links. Pass apiKey to WildlinksConfig.');
+          'API key is required to create links. Pass apiKey to WilderlinksConfig.');
     }
 
     final uri = Uri.parse('${_trimTrailingSlash(cfg.baseUrl)}/api/v1/links');
@@ -335,7 +335,7 @@ class WildlinksSdk {
     final cfg = _requireConfig();
     if (cfg.apiKey == null || cfg.apiKey!.isEmpty) {
       throw StateError(
-          'API key is required to track events. Pass apiKey to WildlinksConfig.');
+          'API key is required to track events. Pass apiKey to WilderlinksConfig.');
     }
 
     final uri = Uri.parse('${_trimTrailingSlash(cfg.baseUrl)}/api/v1/events');

@@ -121,7 +121,7 @@ export interface TrackEventResponse {
   occurredAt: string;
 }
 
-export interface WildlinksConfig {
+export interface WilderlinksConfig {
   baseUrl: string; // e.g. "https://api.yourservice.in"
   domains: string[]; // hostnames this app should treat as its own smart links, e.g. ["go.myapp.com"]
   apiKey?: string;
@@ -138,20 +138,20 @@ export interface ResolvedLink {
   error?: string;
 }
 
-let config: WildlinksConfig | null = null;
+let config: WilderlinksConfig | null = null;
 
-export function init(cfg: WildlinksConfig) {
+export function init(cfg: WilderlinksConfig) {
   config = cfg;
 }
 
-function requireConfig(): WildlinksConfig {
+function requireConfig(): WilderlinksConfig {
   if (!config) {
-    throw new Error('WildLinks SDK not initialized - call init({ baseUrl, domains }) once at app startup');
+    throw new Error('WilderLinks SDK not initialized - call init({ baseUrl, domains }) once at app startup');
   }
   return config;
 }
 
-function requireApiKey(cfg: WildlinksConfig): string {
+function requireApiKey(cfg: WilderlinksConfig): string {
   if (!cfg.apiKey) {
     throw new Error('API key is required to create links. Pass apiKey to init({ baseUrl, domains, apiKey }) once at app startup');
   }
@@ -173,7 +173,7 @@ async function apiRequest<T>(path: string, body: unknown): Promise<T> {
 
   const responseBody = await res.json().catch(() => ({}));
   if (!res.ok) {
-    throw new Error(responseBody?.error || `WildLinks API request failed (${res.status})`);
+    throw new Error(responseBody?.error || `WilderLinks API request failed (${res.status})`);
   }
   return responseBody as T;
 }

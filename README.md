@@ -25,11 +25,11 @@ This folder contains the official SDKs for different client stacks.
 
 ## Product links
 
-- Website: `https://wildlinks.wilderbots.com`
+- Website: `https://wilderlinks.wilderbots.com`
 - Dashboard: `https://wilderlinks.wilderbots.com`
-- Pricing: `https://wildlinks.wilderbots.com/pricing`
-- Contact: `https://wildlinks.wilderbots.com/contact`
-- SDK repository: `https://github.com/wilderbots-droid/wildlinks-sdks`
+- Pricing: `https://wilderlinks.wilderbots.com/pricing`
+- Contact: `https://wilderlinks.wilderbots.com/contact`
+- SDK repository: `https://github.com/hellowilderlinks-cmyk/wilderlinks-sdks`
 
 ## Shared API base
 

@@ -12,15 +12,15 @@ Use the Unity SDK when your game or app needs to:
 Add the package in Unity Package Manager using the Git URL:
 
 ```text
-https://github.com/wilderbots-droid/wildlinks-sdks.git?path=/unity
+https://github.com/hellowilderlinks-cmyk/wilderlinks-sdks.git?path=/unity
 ```
 
 ## Initialize
 
 ```csharp
-using Wilderbots.Wildlinks;
+using Wilderbots.Wilderlinks;
 
-WildlinksClient.Init(new WildlinksConfig(
+WilderlinksClient.Init(new WilderlinksConfig(
     baseUrl: "https://apilink.wilderbots.com",
     domains: new[] { "go.wilderbots.com" },
     apiKey: "dlk_xxx"
@@ -30,7 +30,7 @@ WildlinksClient.Init(new WildlinksConfig(
 ## Resolve a link
 
 ```csharp
-StartCoroutine(WildlinksClient.HandleIncomingUrl(url, result =>
+StartCoroutine(WilderlinksClient.HandleIncomingUrl(url, result =>
 {
     if (!result.matched) return;
     Debug.Log(result.destinationUrl);
@@ -41,7 +41,7 @@ StartCoroutine(WildlinksClient.HandleIncomingUrl(url, result =>
 ## Check deferred install
 
 ```csharp
-StartCoroutine(WildlinksClient.CheckDeferredInstall(result =>
+StartCoroutine(WilderlinksClient.CheckDeferredInstall(result =>
 {
     if (result.matched)
     {
@@ -53,14 +53,14 @@ StartCoroutine(WildlinksClient.CheckDeferredInstall(result =>
 ## Create a smart link
 
 ```csharp
-var request = new WildlinksCreateLinkRequest
+var request = new WilderlinksCreateLinkRequest
 {
     defaultUrl = "https://www.clientbrand.com/summer-sale",
     title = "Launch Offer",
     deepLinkPayloadJson = "{\"screen\":\"offer\",\"offerId\":\"summer24\"}"
 };
 
-StartCoroutine(WildlinksClient.CreateLink(request, link =>
+StartCoroutine(WilderlinksClient.CreateLink(request, link =>
 {
     Debug.Log(link.shortUrl);
 }));
@@ -69,7 +69,7 @@ StartCoroutine(WildlinksClient.CreateLink(request, link =>
 ## Track an event
 
 ```csharp
-StartCoroutine(WildlinksClient.TrackEvent(new WildlinksTrackEventRequest
+StartCoroutine(WilderlinksClient.TrackEvent(new WilderlinksTrackEventRequest
 {
     name = "level_complete",
     linkId = "link_id",
@@ -82,5 +82,5 @@ StartCoroutine(WildlinksClient.TrackEvent(new WildlinksTrackEventRequest
 
 ## Support
 
-- Website: `https://wildlinks.wilderbots.com`
-- Contact: `https://wildlinks.wilderbots.com/contact`
+- Website: `https://wilderlinks.wilderbots.com`
+- Contact: `https://wilderlinks.wilderbots.com/contact`

@@ -49,7 +49,7 @@ Those native settings are what allow the OS to hand the link into your app.
 import 'package:wilderlinks_flutter_sdk/wilderlinks_flutter_sdk.dart';
 
 void main() {
-  WildlinksSdk.init(const WildlinksConfig(
+  WilderlinksSdk.init(const WilderlinksConfig(
     baseUrl: 'https://apilink.wilderbots.com',
     domains: ['go.wilderbots.com'],
   ));
@@ -61,7 +61,7 @@ void main() {
 
 ```dart
 class _MyAppState extends State<MyApp> {
-  final _listener = WildlinksListener();
+  final _listener = WilderlinksListener();
 
   @override
   void initState() {
@@ -96,8 +96,8 @@ class _MyAppState extends State<MyApp> {
 Use this when you only need a short URL that redirects to a long destination.
 
 ```dart
-final shortUrl = await WildlinksSdk.createShortLink(
-  'https://wildlinks.wilderbots.com/pricing',
+final shortUrl = await WilderlinksSdk.createShortLink(
+  'https://wilderlinks.wilderbots.com/pricing',
 );
 ```
 
@@ -106,8 +106,8 @@ final shortUrl = await WildlinksSdk.createShortLink(
 Use this when your app should receive structured routing data.
 
 ```dart
-final link = await WildlinksSdk.createDeepLink(
-  defaultUrl: 'https://wildlinks.wilderbots.com/features/flutter-sdk',
+final link = await WilderlinksSdk.createDeepLink(
+  defaultUrl: 'https://wilderlinks.wilderbots.com/features/flutter-sdk',
   title: 'Flutter SDK',
   pathPrefix: 'x4I9',
   deepLinkPayload: {
@@ -124,7 +124,7 @@ print(link.shortUrl);
 If your iOS install attribution flow returns a `wl_<token>` value, exchange it:
 
 ```dart
-final result = await WildlinksSdk.matchInstallAttributionToken(
+final result = await WilderlinksSdk.matchInstallAttributionToken(
   'https://apilink.wilderbots.com',
   'wl_<token-from-provider>',
   provider: 'app-store-campaign-token',
@@ -135,13 +135,13 @@ final result = await WildlinksSdk.matchInstallAttributionToken(
 
 - API base: `https://apilink.wilderbots.com`
 - Branded domain: `https://go.wilderbots.com`
-- Product URL example: `https://wildlinks.wilderbots.com/features/flutter-sdk`
+- Product URL example: `https://wilderlinks.wilderbots.com/features/flutter-sdk`
 - Registration/dashboard: `https://wilderlinks.wilderbots.com`
 - Dashboard app setup: `https://wilderlinks.wilderbots.com/settings`
 - Custom domain setup: `https://wilderlinks.wilderbots.com/domains`
 
 ## Support
 
-- Website: `https://wildlinks.wilderbots.com`
+- Website: `https://wilderlinks.wilderbots.com`
 - Dashboard: `https://wilderlinks.wilderbots.com`
-- Contact: `https://wildlinks.wilderbots.com/contact`
+- Contact: `https://wilderlinks.wilderbots.com/contact`

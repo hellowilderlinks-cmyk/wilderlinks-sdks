@@ -1,6 +1,6 @@
 import Foundation
 
-public struct WildlinksConfig: Sendable {
+public struct WilderlinksConfig: Sendable {
   public let baseURL: URL
   public let domains: Set<String>
 
@@ -84,12 +84,12 @@ public enum JSONValue: Decodable, Sendable {
   }
 }
 
-public final class WildlinksClient: @unchecked Sendable {
-  private let config: WildlinksConfig
+public final class WilderlinksClient: @unchecked Sendable {
+  private let config: WilderlinksConfig
   private let session: URLSession
   private let decoder = JSONDecoder()
 
-  public init(config: WildlinksConfig, session: URLSession = .shared) {
+  public init(config: WilderlinksConfig, session: URLSession = .shared) {
     self.config = config
     self.session = session
   }

@@ -7,7 +7,7 @@ import 'package:wilderlinks_flutter_sdk/wilderlinks_flutter_sdk.dart';
 
 void main() {
   tearDown(() {
-    WildlinksSdk.reset();
+    WilderlinksSdk.reset();
   });
 
   test('handleIncomingUri resolves matching domain via backend', () async {
@@ -33,13 +33,13 @@ void main() {
       );
     });
 
-    WildlinksSdk.init(const WildlinksConfig(
+    WilderlinksSdk.init(const WilderlinksConfig(
       baseUrl: 'https://api.yourservice.in',
       domains: ['go.yourbrand.com'],
     ));
-    WildlinksSdk.setHttpClient(mockClient);
+    WilderlinksSdk.setHttpClient(mockClient);
 
-    final resolved = await WildlinksSdk.handleIncomingUri(
+    final resolved = await WilderlinksSdk.handleIncomingUri(
         Uri.parse('https://go.yourbrand.com/promo'));
 
     expect(resolved.matched, isTrue);
@@ -74,14 +74,14 @@ void main() {
       );
     });
 
-    WildlinksSdk.init(const WildlinksConfig(
+    WilderlinksSdk.init(const WilderlinksConfig(
       baseUrl: 'https://api.yourservice.in',
       domains: ['go.yourbrand.com'],
       apiKey: 'dlk_xxx',
     ));
-    WildlinksSdk.setHttpClient(mockClient);
+    WilderlinksSdk.setHttpClient(mockClient);
 
-    final result = await WildlinksSdk.createLink(
+    final result = await WilderlinksSdk.createLink(
       defaultUrl: 'https://example.com/promo',
       title: 'Launch Offer',
       deepLinkPayload: {'screen': 'offer', 'offerId': 'spring24'},

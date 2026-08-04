@@ -17,13 +17,13 @@
   "engines": {
     "node": ">=18"
   },
-  "homepage": "https://wildlinks.wilderbots.com",
+  "homepage": "https://wilderlinks.wilderbots.com",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/wilderbots-droid/wildlinks-sdks.git"
+    "url": "git+https://github.com/hellowilderlinks-cmyk/wilderlinks-sdks.git"
   },
   "bugs": {
-    "url": "https://github.com/wilderbots-droid/wildlinks-sdks/issues"
+    "url": "https://github.com/hellowilderlinks-cmyk/wilderlinks-sdks/issues"
   },
   "keywords": [
     "deep-linking",

@@ -29,7 +29,7 @@ flutter/example/pubspec.lock
 # Android package artifacts
 android/.gradle/
 android/build/
-android/wildlinks/build/
+android/wilderlinks/build/
 
 # Swift Package Manager artifacts
 ios/.build/

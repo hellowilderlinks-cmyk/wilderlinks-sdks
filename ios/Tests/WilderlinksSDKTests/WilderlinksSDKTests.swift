@@ -1,7 +1,7 @@
 import XCTest
-@testable import WildlinksSDK
+@testable import WilderlinksSDK
 
-final class WildlinksSDKTests: XCTestCase {
+final class WilderlinksSDKTests: XCTestCase {
   override func tearDown() {
     MockURLProtocol.requestHandler = nil
     super.tearDown()
@@ -35,8 +35,8 @@ final class WildlinksSDKTests: XCTestCase {
       """)
     }
 
-    let client = WildlinksClient(
-      config: WildlinksConfig(
+    let client = WilderlinksClient(
+      config: WilderlinksConfig(
         baseURL: URL(string: "https://apilink.wilderbots.com")!,
         domains: ["go.yourbrand.com"]
       ),
@@ -56,8 +56,8 @@ final class WildlinksSDKTests: XCTestCase {
   }
 
   func testHandleIncomingURLIgnoresUnknownDomain() async {
-    let client = WildlinksClient(
-      config: WildlinksConfig(
+    let client = WilderlinksClient(
+      config: WilderlinksConfig(
         baseURL: URL(string: "https://apilink.wilderbots.com")!,
         domains: ["go.yourbrand.com"]
       ),
@@ -87,8 +87,8 @@ final class WildlinksSDKTests: XCTestCase {
       """)
     }
 
-    let client = WildlinksClient(
-      config: WildlinksConfig(
+    let client = WilderlinksClient(
+      config: WilderlinksConfig(
         baseURL: URL(string: "https://apilink.wilderbots.com")!,
         domains: ["go.yourbrand.com"]
       ),
@@ -118,8 +118,8 @@ final class WildlinksSDKTests: XCTestCase {
       """)
     }
 
-    let client = WildlinksClient(
-      config: WildlinksConfig(
+    let client = WilderlinksClient(
+      config: WilderlinksConfig(
         baseURL: URL(string: "https://apilink.wilderbots.com")!,
         domains: ["go.yourbrand.com"]
       ),

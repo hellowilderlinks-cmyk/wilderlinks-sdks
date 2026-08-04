@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:app_links/app_links.dart';
 
-import 'wildlinks_client.dart';
+import 'wilderlinks_client.dart';
 import 'models.dart';
 
 /// Convenience wrapper around the `app_links` package that automatically resolves
@@ -12,7 +12,7 @@ import 'models.dart';
 ///
 /// Usage:
 /// ```dart
-/// final listener = WildlinksListener();
+/// final listener = WilderlinksListener();
 /// listener.stream.listen((resolved) {
 ///   if (resolved.matched) {
 ///     // navigate using resolved.deepLinkPayload
@@ -20,7 +20,7 @@ import 'models.dart';
 /// });
 /// await listener.start();
 /// ```
-class WildlinksListener {
+class WilderlinksListener {
   final AppLinks _appLinks = AppLinks();
   final StreamController<ResolvedLink> _controller =
       StreamController<ResolvedLink>.broadcast();
@@ -29,18 +29,18 @@ class WildlinksListener {
 
   Stream<ResolvedLink> get stream => _controller.stream;
 
-  /// Call once, after [WildlinksSdk.init]. Checks the initial link (cold start),
+  /// Call once, after [WilderlinksSdk.init]. Checks the initial link (cold start),
   /// falls back to a deferred-install check if there wasn't one, then subscribes
   /// to further links tapped while the app is running.
   Future<void> start() async {
     try {
       final initialUri = await _appLinks.getInitialLink();
       if (initialUri != null) {
-        final resolved = await WildlinksSdk.handleIncomingUri(initialUri);
+        final resolved = await WilderlinksSdk.handleIncomingUri(initialUri);
         if (resolved.matched) _controller.add(resolved);
       } else if (!_checkedDeferred) {
         _checkedDeferred = true;
-        final deferred = await WildlinksSdk.checkDeferredInstall();
+        final deferred = await WilderlinksSdk.checkDeferredInstall();
         if (deferred.matched) _controller.add(deferred);
       }
     } catch (err) {
@@ -48,7 +48,7 @@ class WildlinksListener {
     }
 
     _subscription = _appLinks.uriLinkStream.listen((uri) async {
-      final resolved = await WildlinksSdk.handleIncomingUri(uri);
+      final resolved = await WilderlinksSdk.handleIncomingUri(uri);
       if (resolved.matched) _controller.add(resolved);
     });
   }

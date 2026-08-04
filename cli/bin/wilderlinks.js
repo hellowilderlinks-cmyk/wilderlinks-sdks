@@ -4,8 +4,8 @@ const fs = require('fs');
 const os = require('os');
 const path = require('path');
 
-const CONFIG_PATH = process.env.WILDLINKS_CONFIG || path.join(os.homedir(), '.wildlinks.json');
-const DEFAULT_API_BASE = process.env.WILDLINKS_API_BASE || 'http://localhost:4000';
+const CONFIG_PATH = process.env.WILDERLINKS_CONFIG || path.join(os.homedir(), '.wilderlinks.json');
+const DEFAULT_API_BASE = process.env.WILDERLINKS_API_BASE || 'http://localhost:4000';
 
 function printHelp() {
   console.log(`WilderLink CLI
@@ -22,7 +22,7 @@ Usage:
   wl utm generate --url URL [--title TITLE] [--source instagram] [--medium social] [--campaign launch] [--content hero]
 
 Environment:
-  WILDLINKS_API_BASE, WILDLINKS_TOKEN, WILDLINKS_ORG_ID, WILDLINKS_API_KEY, WILDLINKS_CONFIG`);
+  WILDERLINKS_API_BASE, WILDERLINKS_TOKEN, WILDERLINKS_ORG_ID, WILDERLINKS_API_KEY, WILDERLINKS_CONFIG`);
 }
 
 function parseArgv(argv) {
@@ -62,10 +62,10 @@ function writeConfig(config) {
 function resolveConfig(args = {}) {
   const file = readConfig();
   return {
-    apiBase: String(args.apiBase || process.env.WILDLINKS_API_BASE || file.apiBase || DEFAULT_API_BASE).replace(/\/$/, ''),
-    token: args.token || process.env.WILDLINKS_TOKEN || file.token || null,
-    orgId: args.org || args.orgId || process.env.WILDLINKS_ORG_ID || file.orgId || null,
-    apiKey: args.apiKey || process.env.WILDLINKS_API_KEY || file.apiKey || null,
+    apiBase: String(args.apiBase || process.env.WILDERLINKS_API_BASE || file.apiBase || DEFAULT_API_BASE).replace(/\/$/, ''),
+    token: args.token || process.env.WILDERLINKS_TOKEN || file.token || null,
+    orgId: args.org || args.orgId || process.env.WILDERLINKS_ORG_ID || file.orgId || null,
+    apiKey: args.apiKey || process.env.WILDERLINKS_API_KEY || file.apiKey || null,
     organizations: file.organizations || [],
   };
 }
@@ -82,8 +82,8 @@ function requireValue(value, message) {
 async function request(config, method, route, { body, apiKey = false, binary = false } = {}) {
   const headers = {};
   if (body !== undefined) headers['Content-Type'] = 'application/json';
-  if (apiKey) headers.Authorization = `ApiKey ${requireValue(config.apiKey, 'Missing API key. Run wl config set --api-key KEY or set WILDLINKS_API_KEY.')}`;
-  else headers.Authorization = `Bearer ${requireValue(config.token, 'Missing auth token. Run wl login or set WILDLINKS_TOKEN.')}`;
+  if (apiKey) headers.Authorization = `ApiKey ${requireValue(config.apiKey, 'Missing API key. Run wl config set --api-key KEY or set WILDERLINKS_API_KEY.')}`;
+  else headers.Authorization = `Bearer ${requireValue(config.token, 'Missing auth token. Run wl login or set WILDERLINKS_TOKEN.')}`;
   if (config.orgId) headers['X-Organization-Id'] = config.orgId;
 
   const response = await fetch(`${config.apiBase}${route}`, {
@@ -253,8 +253,8 @@ async function qrCommand(args) {
     ? `/api/v1/organizations/${config.orgId}/links/${id}/qrcode?${query}`
     : `/api/v1/links/${id}/qrcode?${query}`;
   const headers = config.orgId
-    ? { Authorization: `Bearer ${requireValue(config.token, 'Missing auth token. Run wl login or set WILDLINKS_TOKEN.')}`, 'X-Organization-Id': config.orgId }
-    : { Authorization: `ApiKey ${requireValue(config.apiKey, 'Missing API key. Run wl config set --api-key KEY or set WILDLINKS_API_KEY.')}` };
+    ? { Authorization: `Bearer ${requireValue(config.token, 'Missing auth token. Run wl login or set WILDERLINKS_TOKEN.')}`, 'X-Organization-Id': config.orgId }
+    : { Authorization: `ApiKey ${requireValue(config.apiKey, 'Missing API key. Run wl config set --api-key KEY or set WILDERLINKS_API_KEY.')}` };
   const response = await fetch(`${config.apiBase}${route}`, { headers });
   if (!response.ok) throw new Error(await errorMessage(response));
   const contentType = response.headers.get('content-type') || '';

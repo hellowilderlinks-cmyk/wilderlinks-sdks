@@ -2,13 +2,13 @@
 import PackageDescription
 
 let package = Package(
-  name: "WildlinksSDK",
+  name: "WilderlinksSDK",
   platforms: [.iOS(.v13), .macOS(.v12)],
   products: [
-    .library(name: "WildlinksSDK", targets: ["WildlinksSDK"]),
+    .library(name: "WilderlinksSDK", targets: ["WilderlinksSDK"]),
   ],
   targets: [
-    .target(name: "WildlinksSDK"),
-    .testTarget(name: "WildlinksSDKTests", dependencies: ["WildlinksSDK"]),
+    .target(name: "WilderlinksSDK"),
+    .testTarget(name: "WilderlinksSDKTests", dependencies: ["WilderlinksSDK"]),
   ]
 )

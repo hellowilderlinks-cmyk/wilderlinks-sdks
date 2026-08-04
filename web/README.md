@@ -14,14 +14,14 @@ npm install @wilderbots/wilderlinks-sdk
 ## Create a short link from your backend
 
 ```ts
-import { WildlinksClient } from '@wilderbots/wilderlinks-sdk';
+import { WilderlinksClient } from '@wilderbots/wilderlinks-sdk';
 
-const wildlinks = new WildlinksClient({
+const wilderlinks = new WilderlinksClient({
   apiKey: process.env.DEEPLINK_API_KEY!,
   baseUrl: 'https://apilink.wilderbots.com',
 });
 
-const shortUrl = await wildlinks.createShortLink({
+const shortUrl = await wilderlinks.createShortLink({
   defaultUrl: 'https://www.clientbrand.com/summer-sale',
 });
 
@@ -31,7 +31,7 @@ console.log(shortUrl);
 ## Create a smart app link from your backend
 
 ```ts
-const link = await wildlinks.createDeepLink({
+const link = await wilderlinks.createDeepLink({
   defaultUrl: 'https://www.clientbrand.com/summer-sale',
   appProfileId: 'app_profile_123',
   deepLinkPayload: { screen: 'offer', offerId: 'summer24' },
@@ -67,12 +67,12 @@ const result = await matchInstallAttributionToken(
 
 ## Notes
 
-- Keep `WildlinksClient` on trusted backends only.
+- Keep `WilderlinksClient` on trusted backends only.
 - Use browser helpers in public web apps when no API secret is needed.
 - WilderLinks supports both plain and prefixed smart-link paths.
 
 ## Support
 
-- Website: `https://wildlinks.wilderbots.com`
+- Website: `https://wilderlinks.wilderbots.com`
 - Dashboard: `https://wilderlinks.wilderbots.com`
-- Contact: `https://wildlinks.wilderbots.com/contact`
+- Contact: `https://wilderlinks.wilderbots.com/contact`

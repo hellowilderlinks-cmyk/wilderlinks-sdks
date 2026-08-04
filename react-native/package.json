@@ -8,13 +8,13 @@
   "files": [
     "dist"
   ],
-  "homepage": "https://wildlinks.wilderbots.com",
+  "homepage": "https://wilderlinks.wilderbots.com",
   "repository": {
     "type": "git",
-    "url": "https://github.com/wilderbots-droid/wildlinks-sdks.git"
+    "url": "https://github.com/hellowilderlinks-cmyk/wilderlinks-sdks.git"
   },
   "bugs": {
-    "url": "https://github.com/wilderbots-droid/wildlinks-sdks/issues"
+    "url": "https://github.com/hellowilderlinks-cmyk/wilderlinks-sdks/issues"
   },
   "author": "Wilderbots <wilderbots@gmail.com>",
   "scripts": {

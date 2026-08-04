@@ -1,4 +1,4 @@
-export interface WildlinksClientOptions {
+export interface WilderlinksClientOptions {
   apiKey: string;
   baseUrl: string; // e.g. "https://api.yourservice.in"
 }
@@ -104,15 +104,15 @@ export interface TrackEventInput {
 }
 
 /**
- * Server-side client for the WildLinks platform. Use this from your backend or build
+ * Server-side client for the WilderLinks platform. Use this from your backend or build
  * scripts to create/manage links — never ship your API key into a browser bundle or
  * mobile app binary.
  */
-export class WildlinksClient {
+export class WilderlinksClient {
   private apiKey: string;
   private baseUrl: string;
 
-  constructor(options: WildlinksClientOptions) {
+  constructor(options: WilderlinksClientOptions) {
     this.apiKey = options.apiKey;
     this.baseUrl = options.baseUrl.replace(/\/$/, '');
   }
@@ -129,7 +129,7 @@ export class WildlinksClient {
 
     const body = await res.json().catch(() => ({}));
     if (!res.ok) {
-      throw new Error(body?.error || `WildLinks API request failed (${res.status})`);
+      throw new Error(body?.error || `WilderLinks API request failed (${res.status})`);
     }
     return body as T;
   }

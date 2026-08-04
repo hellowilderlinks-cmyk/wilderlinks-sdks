@@ -1,4 +1,4 @@
-package com.wilderbots.wildlinks
+package com.wilderbots.wilderlinks
 
 import android.content.ClipData
 import android.content.ClipboardManager
@@ -14,7 +14,7 @@ import java.net.URL
 import java.net.URLEncoder
 import java.util.Locale
 
-data class WildlinksConfig(
+data class WilderlinksConfig(
   val baseUrl: String,
   val domains: List<String>
 )
@@ -28,10 +28,10 @@ data class ResolvedLink(
   val error: String? = null
 )
 
-object Wildlinks {
-  private var config: WildlinksConfig? = null
+object Wilderlinks {
+  private var config: WilderlinksConfig? = null
 
-  fun init(config: WildlinksConfig) {
+  fun init(config: WilderlinksConfig) {
     this.config = config
   }
 
@@ -93,8 +93,8 @@ object Wildlinks {
     )
   }
 
-  private fun requireConfig(): WildlinksConfig =
-    config ?: throw IllegalStateException("Wildlinks is not initialized. Call Wildlinks.init(...) first.")
+  private fun requireConfig(): WilderlinksConfig =
+    config ?: throw IllegalStateException("WilderLinks SDK is not initialized. Call Wilderlinks.init(...) first.")
 
   private fun ClipData.firstText(context: Context): String? =
     if (itemCount > 0) getItemAt(0).coerceToText(context)?.toString() else null

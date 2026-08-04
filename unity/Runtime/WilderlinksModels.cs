@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 
-namespace Wilderbots.Wildlinks
+namespace Wilderbots.Wilderlinks
 {
     [Serializable]
-    public sealed class WildlinksResolvedLink
+    public sealed class WilderlinksResolvedLink
     {
         public bool matched;
         public string openId;
@@ -16,7 +16,7 @@ namespace Wilderbots.Wildlinks
     }
 
     [Serializable]
-    public sealed class WildlinksLinkResponse
+    public sealed class WilderlinksLinkResponse
     {
         public string _id;
         public string slug;
@@ -31,7 +31,7 @@ namespace Wilderbots.Wildlinks
     }
 
     [Serializable]
-    public sealed class WildlinksQrCodeResponse
+    public sealed class WilderlinksQrCodeResponse
     {
         public string shortUrl;
         public string qrCodeDataUrl;
@@ -39,7 +39,7 @@ namespace Wilderbots.Wildlinks
     }
 
     [Serializable]
-    public sealed class WildlinksEventResponse
+    public sealed class WilderlinksEventResponse
     {
         public string id;
         public string name;
@@ -49,7 +49,7 @@ namespace Wilderbots.Wildlinks
     }
 
     [Serializable]
-    public sealed class WildlinksUtm
+    public sealed class WilderlinksUtm
     {
         public string source;
         public string medium;
@@ -59,7 +59,7 @@ namespace Wilderbots.Wildlinks
     }
 
     [Serializable]
-    public sealed class WildlinksMarketing
+    public sealed class WilderlinksMarketing
     {
         public string referralCode;
         public string affiliateId;
@@ -69,7 +69,7 @@ namespace Wilderbots.Wildlinks
     }
 
     [Serializable]
-    public sealed class WildlinksCreateLinkRequest
+    public sealed class WilderlinksCreateLinkRequest
     {
         public string defaultUrl;
         public string domainId;
@@ -80,8 +80,8 @@ namespace Wilderbots.Wildlinks
         public string rulesJson;
         public string splitTargetsJson;
         public string deepLinkPayloadJson;
-        public WildlinksUtm utm;
-        public WildlinksMarketing marketing;
+        public WilderlinksUtm utm;
+        public WilderlinksMarketing marketing;
         public string leadCaptureJson;
         public string retargetingPixelsJson;
         public string ctaOverlayJson;
@@ -94,7 +94,7 @@ namespace Wilderbots.Wildlinks
     }
 
     [Serializable]
-    public sealed class WildlinksTrackEventRequest
+    public sealed class WilderlinksTrackEventRequest
     {
         public string name;
         public string linkId;

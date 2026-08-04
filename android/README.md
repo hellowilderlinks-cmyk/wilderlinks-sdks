@@ -6,8 +6,8 @@ exchange install attribution tokens.
 ## Initialize
 
 ```kotlin
-Wildlinks.init(
-  WildlinksConfig(
+Wilderlinks.init(
+  WilderlinksConfig(
     baseUrl = "https://apilink.wilderbots.com",
     domains = listOf("go.wilderbots.com")
   )
@@ -17,7 +17,7 @@ Wildlinks.init(
 ## Resolve an App Link
 
 ```kotlin
-val result = Wildlinks.handleIncomingUri(intent.data!!)
+val result = Wilderlinks.handleIncomingUri(intent.data!!)
 if (result.matched) {
   // result.destinationUrl
   // result.deepLinkPayload
@@ -28,13 +28,13 @@ if (result.matched) {
 ## Match a deferred install
 
 ```kotlin
-val result = Wildlinks.checkDeferredInstall(context)
+val result = Wilderlinks.checkDeferredInstall(context)
 ```
 
 ## Match a known deferred token
 
 ```kotlin
-val result = Wildlinks.matchDeferredToken(
+val result = Wilderlinks.matchDeferredToken(
   "https://apilink.wilderbots.com",
   "<32-char-token>"
 )
@@ -43,7 +43,7 @@ val result = Wildlinks.matchDeferredToken(
 ## Match App Store-style attribution token
 
 ```kotlin
-val result = Wildlinks.matchInstallAttributionToken(
+val result = Wilderlinks.matchInstallAttributionToken(
   "https://apilink.wilderbots.com",
   "wl_<token-from-provider>"
 )
@@ -51,5 +51,5 @@ val result = Wildlinks.matchInstallAttributionToken(
 
 ## Support
 
-- Website: `https://wildlinks.wilderbots.com`
-- Contact: `https://wildlinks.wilderbots.com/contact`
+- Website: `https://wilderlinks.wilderbots.com`
+- Contact: `https://wilderlinks.wilderbots.com/contact`

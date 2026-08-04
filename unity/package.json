@@ -1,5 +1,5 @@
 {
-  "name": "com.wilderbots.wildlinks",
+  "name": "com.wilderbots.wilderlinks",
   "version": "1.0.0",
   "displayName": "WilderLinks Unity SDK",
   "description": "Unity SDK for resolving WilderLinks deep links, matching deferred installs, creating smart links, and tracking app events.",

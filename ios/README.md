@@ -6,14 +6,14 @@ and exchange App Store attribution tokens.
 ## Add the package
 
 ```swift
-.package(url: "https://github.com/wilderbots-droid/wildlinks-sdks.git", from: "1.0.0")
+.package(url: "https://github.com/hellowilderlinks-cmyk/wilderlinks-sdks.git", from: "1.0.0")
 ```
 
 ## Initialize
 
 ```swift
-let client = WildlinksClient(
-  config: WildlinksConfig(
+let client = WilderlinksClient(
+  config: WilderlinksConfig(
     baseURL: URL(string: "https://apilink.wilderbots.com")!,
     domains: ["go.wilderbots.com"]
   )
@@ -45,5 +45,5 @@ let result = await client.matchInstallAttributionToken("wl_<token-from-provider>
 
 ## Support
 
-- Website: `https://wildlinks.wilderbots.com`
-- Contact: `https://wildlinks.wilderbots.com/contact`
+- Website: `https://wilderlinks.wilderbots.com`
+- Contact: `https://wilderlinks.wilderbots.com/contact`

@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Linking } from 'react-native';
 import { handleIncomingUrl, checkDeferredInstall, ResolvedLink } from './linking';
 
-interface UseWildlinksResult {
+interface UseWilderlinksResult {
   resolved: ResolvedLink | null;
   loading: boolean;
 }
@@ -15,7 +15,7 @@ interface UseWildlinksResult {
  *
  * Use the returned `resolved.deepLinkPayload` to navigate once it becomes non-null.
  */
-export function useWildlinks(): UseWildlinksResult {
+export function useWilderlinks(): UseWilderlinksResult {
   const [resolved, setResolved] = useState<ResolvedLink | null>(null);
   const [loading, setLoading] = useState(true);
   const checkedDeferred = useRef(false);

@@ -30,10 +30,10 @@ wl login \
 ## Configure with environment variables
 
 ```bash
-WILDLINKS_API_BASE=https://apilink.wilderbots.com
-WILDLINKS_TOKEN=<dashboard-jwt>
-WILDLINKS_ORG_ID=<organization-id>
-WILDLINKS_API_KEY=<server-api-key>
+WILDERLINKS_API_BASE=https://apilink.wilderbots.com
+WILDERLINKS_TOKEN=<dashboard-jwt>
+WILDERLINKS_ORG_ID=<organization-id>
+WILDERLINKS_API_KEY=<server-api-key>
 ```
 
 ## Common commands
@@ -56,5 +56,5 @@ wilderlinks utm generate --url https://www.clientbrand.com/app --title "Summer L
 
 ## Support
 
-- Website: `https://wildlinks.wilderbots.com`
-- Contact: `https://wildlinks.wilderbots.com/contact`
+- Website: `https://wilderlinks.wilderbots.com`
+- Contact: `https://wilderlinks.wilderbots.com/contact`

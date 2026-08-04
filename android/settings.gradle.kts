@@ -14,5 +14,5 @@ dependencyResolutionManagement {
   }
 }
 
-rootProject.name = "wildlinks-android-sdk"
-include(":wildlinks")
+rootProject.name = "wilderlinks-android-sdk"
+include(":wilderlinks")

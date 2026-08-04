@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-  namespace = "com.wilderbots.wildlinks"
+  namespace = "com.wilderbots.wilderlinks"
   compileSdk = 35
 
   defaultConfig {

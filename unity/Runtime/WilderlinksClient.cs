@@ -6,21 +6,21 @@ using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace Wilderbots.Wildlinks
+namespace Wilderbots.Wilderlinks
 {
-    public static class WildlinksClient
+    public static class WilderlinksClient
     {
         private static readonly Regex MatchTokenRegex = new Regex("^[a-f0-9]{32}$", RegexOptions.IgnoreCase);
         private static readonly Regex ClipboardTokenRegex = new Regex("dl_match_token=([a-f0-9]{32})", RegexOptions.IgnoreCase);
-        private static WildlinksConfig _config;
+        private static WilderlinksConfig _config;
 
-        public static void Init(WildlinksConfig config)
+        public static void Init(WilderlinksConfig config)
         {
             if (config == null) throw new ArgumentNullException(nameof(config));
             _config = config;
         }
 
-        public static IEnumerator HandleIncomingUrl(string url, Action<WildlinksResolvedLink> callback)
+        public static IEnumerator HandleIncomingUrl(string url, Action<WilderlinksResolvedLink> callback)
         {
             var cfg = RequireConfig();
             if (!Uri.TryCreate(url, UriKind.Absolute, out var uri))
@@ -32,7 +32,7 @@ namespace Wilderbots.Wildlinks
             var token = GetQueryValue(uri.Query, "dl_match_token");
             if (!string.IsNullOrEmpty(token) && MatchTokenRegex.IsMatch(token))
             {
-                WildlinksResolvedLink deferred = null;
+                WilderlinksResolvedLink deferred = null;
                 yield return MatchDeferredToken(cfg.BaseUrl, token, result => deferred = result);
                 if (deferred != null && deferred.matched)
                 {
@@ -43,7 +43,7 @@ namespace Wilderbots.Wildlinks
 
             if (!cfg.Domains.Contains(uri.Host))
             {
-                callback?.Invoke(new WildlinksResolvedLink { matched = false });
+                callback?.Invoke(new WilderlinksResolvedLink { matched = false });
                 yield break;
             }
 
@@ -71,76 +71,76 @@ namespace Wilderbots.Wildlinks
             query["osVersion"] = SystemInfo.operatingSystem;
 
             var endpoint = TrimSlash(cfg.BaseUrl) + "/api/v1/resolve?" + BuildQuery(query);
-            yield return SendGet<WildlinksResolvedLink>(endpoint, null, result =>
+            yield return SendGet<WilderlinksResolvedLink>(endpoint, null, result =>
             {
                 if (result != null && string.IsNullOrEmpty(result.error)) result.matched = true;
                 callback?.Invoke(result);
             });
         }
 
-        public static IEnumerator CheckDeferredInstall(Action<WildlinksResolvedLink> callback)
+        public static IEnumerator CheckDeferredInstall(Action<WilderlinksResolvedLink> callback)
         {
             var cfg = RequireConfig();
             var text = GUIUtility.systemCopyBuffer;
             var match = string.IsNullOrEmpty(text) ? null : ClipboardTokenRegex.Match(text);
             if (match == null || !match.Success)
             {
-                callback?.Invoke(new WildlinksResolvedLink { matched = false });
+                callback?.Invoke(new WilderlinksResolvedLink { matched = false });
                 yield break;
             }
             yield return MatchDeferredToken(cfg.BaseUrl, match.Groups[1].Value, callback);
         }
 
-        public static IEnumerator MatchDeferredToken(string baseUrl, string matchToken, Action<WildlinksResolvedLink> callback)
+        public static IEnumerator MatchDeferredToken(string baseUrl, string matchToken, Action<WilderlinksResolvedLink> callback)
         {
             var body = "{\"matchToken\":" + Quote(matchToken) + "}";
-            yield return SendPost<WildlinksResolvedLink>(TrimSlash(baseUrl) + "/api/v1/match", body, null, callback);
+            yield return SendPost<WilderlinksResolvedLink>(TrimSlash(baseUrl) + "/api/v1/match", body, null, callback);
         }
 
-        public static IEnumerator MatchInstallAttributionToken(string baseUrl, string installAttributionToken, Action<WildlinksResolvedLink> callback, string provider = "app-store-campaign-token")
+        public static IEnumerator MatchInstallAttributionToken(string baseUrl, string installAttributionToken, Action<WilderlinksResolvedLink> callback, string provider = "app-store-campaign-token")
         {
             var body = "{\"installAttributionToken\":" + Quote(installAttributionToken) + ",\"provider\":" + Quote(provider) + "}";
-            yield return SendPost<WildlinksResolvedLink>(TrimSlash(baseUrl) + "/api/v1/match/install-attribution", body, null, callback);
+            yield return SendPost<WilderlinksResolvedLink>(TrimSlash(baseUrl) + "/api/v1/match/install-attribution", body, null, callback);
         }
 
-        public static IEnumerator CreateLink(WildlinksCreateLinkRequest request, Action<WildlinksLinkResponse> callback)
+        public static IEnumerator CreateLink(WilderlinksCreateLinkRequest request, Action<WilderlinksLinkResponse> callback)
         {
             var cfg = RequireConfig();
             RequireApiKey(cfg);
-            yield return SendPost<WildlinksLinkResponse>(TrimSlash(cfg.BaseUrl) + "/api/v1/links", ToJson(request), cfg.ApiKey, callback);
+            yield return SendPost<WilderlinksLinkResponse>(TrimSlash(cfg.BaseUrl) + "/api/v1/links", ToJson(request), cfg.ApiKey, callback);
         }
 
-        public static IEnumerator CreateDeepLink(WildlinksCreateLinkRequest request, Action<WildlinksLinkResponse> callback)
+        public static IEnumerator CreateDeepLink(WilderlinksCreateLinkRequest request, Action<WilderlinksLinkResponse> callback)
         {
             yield return CreateLink(request, callback);
         }
 
-        public static IEnumerator CreateShortLink(WildlinksCreateLinkRequest request, Action<string, string> callback)
+        public static IEnumerator CreateShortLink(WilderlinksCreateLinkRequest request, Action<string, string> callback)
         {
             request.preferShortDomain = true;
             yield return CreateLink(request, result => callback?.Invoke(result?.shortUrl, result?.error));
         }
 
-        public static IEnumerator GetLink(string linkId, Action<WildlinksLinkResponse> callback)
+        public static IEnumerator GetLink(string linkId, Action<WilderlinksLinkResponse> callback)
         {
             var cfg = RequireConfig();
             RequireApiKey(cfg);
-            yield return SendGet<WildlinksLinkResponse>(TrimSlash(cfg.BaseUrl) + "/api/v1/links/" + Escape(linkId), cfg.ApiKey, callback);
+            yield return SendGet<WilderlinksLinkResponse>(TrimSlash(cfg.BaseUrl) + "/api/v1/links/" + Escape(linkId), cfg.ApiKey, callback);
         }
 
-        public static IEnumerator GetQrCode(string linkId, Action<WildlinksQrCodeResponse> callback, string format = "png")
+        public static IEnumerator GetQrCode(string linkId, Action<WilderlinksQrCodeResponse> callback, string format = "png")
         {
             var cfg = RequireConfig();
             RequireApiKey(cfg);
             var url = TrimSlash(cfg.BaseUrl) + "/api/v1/links/" + Escape(linkId) + "/qrcode?format=" + Escape(format);
-            yield return SendGet<WildlinksQrCodeResponse>(url, cfg.ApiKey, callback);
+            yield return SendGet<WilderlinksQrCodeResponse>(url, cfg.ApiKey, callback);
         }
 
-        public static IEnumerator TrackEvent(WildlinksTrackEventRequest request, Action<WildlinksEventResponse> callback)
+        public static IEnumerator TrackEvent(WilderlinksTrackEventRequest request, Action<WilderlinksEventResponse> callback)
         {
             var cfg = RequireConfig();
             RequireApiKey(cfg);
-            yield return SendPost<WildlinksEventResponse>(TrimSlash(cfg.BaseUrl) + "/api/v1/events", ToJson(request), cfg.ApiKey, callback);
+            yield return SendPost<WilderlinksEventResponse>(TrimSlash(cfg.BaseUrl) + "/api/v1/events", ToJson(request), cfg.ApiKey, callback);
         }
 
         private static IEnumerator SendGet<T>(string url, string apiKey, Action<T> callback) where T : class, new()
@@ -179,7 +179,7 @@ namespace Wilderbots.Wildlinks
                 parsed = new T();
             }
 
-            if (parsed is WildlinksResolvedLink resolved)
+            if (parsed is WilderlinksResolvedLink resolved)
             {
                 resolved.deepLinkPayloadJson = ExtractJsonField(body, "deepLinkPayload");
             }
@@ -190,23 +190,23 @@ namespace Wilderbots.Wildlinks
             return parsed;
         }
 
-        private static WildlinksResolvedLink NotMatched(string error)
+        private static WilderlinksResolvedLink NotMatched(string error)
         {
-            return new WildlinksResolvedLink { matched = false, error = error };
+            return new WilderlinksResolvedLink { matched = false, error = error };
         }
 
-        private static WildlinksConfig RequireConfig()
+        private static WilderlinksConfig RequireConfig()
         {
-            if (_config == null) throw new InvalidOperationException("WildlinksClient is not initialized. Call WildlinksClient.Init(...) once at app startup.");
+            if (_config == null) throw new InvalidOperationException("WilderLinks SDK is not initialized. Call WilderlinksClient.Init(...) once at app startup.");
             return _config;
         }
 
-        private static void RequireApiKey(WildlinksConfig cfg)
+        private static void RequireApiKey(WilderlinksConfig cfg)
         {
-            if (string.IsNullOrEmpty(cfg.ApiKey)) throw new InvalidOperationException("API key is required. Pass ApiKey in WildlinksConfig for link creation and event tracking.");
+            if (string.IsNullOrEmpty(cfg.ApiKey)) throw new InvalidOperationException("API key is required. Pass ApiKey in WilderlinksConfig for link creation and event tracking.");
         }
 
-        private static string ToJson(WildlinksCreateLinkRequest request)
+        private static string ToJson(WilderlinksCreateLinkRequest request)
         {
             var json = new JsonBuilder();
             json.Add("defaultUrl", request.defaultUrl);
@@ -232,7 +232,7 @@ namespace Wilderbots.Wildlinks
             return json.ToString();
         }
 
-        private static string ToJson(WildlinksTrackEventRequest request)
+        private static string ToJson(WilderlinksTrackEventRequest request)
         {
             var json = new JsonBuilder();
             json.Add("name", request.name);
@@ -245,7 +245,7 @@ namespace Wilderbots.Wildlinks
             return json.ToString();
         }
 
-        private static string UtmJson(WildlinksUtm utm)
+        private static string UtmJson(WilderlinksUtm utm)
         {
             if (utm == null) return null;
             var json = new JsonBuilder();
@@ -257,7 +257,7 @@ namespace Wilderbots.Wildlinks
             return json.IsEmpty ? null : json.ToString();
         }
 
-        private static string MarketingJson(WildlinksMarketing marketing)
+        private static string MarketingJson(WilderlinksMarketing marketing)
         {
             if (marketing == null) return null;
             var json = new JsonBuilder();

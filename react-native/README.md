@@ -27,9 +27,9 @@ You still need OS-level link configuration:
 ## Initialize once
 
 ```tsx
-import { initWildlinks, useWildlinks } from '@wilderbots/wilderlinks-react-native';
+import { initWilderlinks, useWilderlinks } from '@wilderbots/wilderlinks-react-native';
 
-initWildlinks({
+initWilderlinks({
   baseUrl: 'https://apilink.wilderbots.com',
   domains: ['go.wilderbots.com'],
   apiKey: 'dlk_xxx',
@@ -40,7 +40,7 @@ initWildlinks({
 
 ```tsx
 function App() {
-  const { resolved } = useWildlinks();
+  const { resolved } = useWilderlinks();
 
   useEffect(() => {
     if (resolved?.matched && resolved.deepLinkPayload) {
@@ -92,5 +92,5 @@ const result = await matchInstallAttributionToken(
 
 ## Support
 
-- Website: `https://wildlinks.wilderbots.com`
-- Contact: `https://wildlinks.wilderbots.com/contact`
+- Website: `https://wilderlinks.wilderbots.com`
+- Contact: `https://wilderlinks.wilderbots.com/contact`
