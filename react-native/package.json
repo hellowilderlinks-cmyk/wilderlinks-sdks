@@ -1,6 +1,6 @@
 {
   "name": "@wilderlinks/wilderlinks-react-native",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "React Native SDK for the WilderLinks smart link platform - Universal Link/App Link handling and deferred deep link matching",
   "main": "dist/index.js",
   "module": "dist/index.mjs",

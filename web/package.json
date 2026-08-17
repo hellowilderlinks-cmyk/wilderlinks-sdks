@@ -1,6 +1,6 @@
 {
   "name": "@wilderlinks/wilderlinks-sdk",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Web SDK for the WilderLinks smart link platform - server-side link management and browser-side deferred deep link matching",
   "main": "dist/index.js",
   "module": "dist/index.mjs",

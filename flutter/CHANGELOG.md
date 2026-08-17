@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.10
+
+- Add Android Play Install Referrer deferred deep link matching helpers.
+- Document Flutter Play Install Referrer MethodChannel setup for production
+  Android deferred installs.
+
 ## 1.0.9
 
 - Update pub.dev package metadata to the public WilderLinks SDK repository.
