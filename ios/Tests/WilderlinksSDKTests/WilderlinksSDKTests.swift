@@ -1,5 +1,8 @@
 import XCTest
 @testable import WilderlinksSDK
+#if canImport(UIKit)
+import UIKit
+#endif
 
 final class WilderlinksSDKTests: XCTestCase {
   override func tearDown() {
@@ -131,6 +134,52 @@ final class WilderlinksSDKTests: XCTestCase {
     XCTAssertTrue(result.matched)
     XCTAssertEqual(result.installAttributionProvider, "app-store-campaign-token")
   }
+
+  #if canImport(UIKit)
+  func testCheckDeferredInstallClaimsTokenFromPasteboard() async {
+    UIPasteboard.general.string = "dl_match_token=abcdef0123456789abcdef0123456789"
+
+    let session = mockSession { request in
+      XCTAssertEqual(request.url?.path, "/api/v1/match")
+      let body = try! JSONSerialization.jsonObject(with: requestBodyData(request)) as! [String: String]
+      XCTAssertEqual(body["matchToken"], "abcdef0123456789abcdef0123456789")
+      return jsonResponse("""
+      { "matched": true, "destinationUrl": "https://example.com/from-pasteboard" }
+      """)
+    }
+
+    let client = WilderlinksClient(
+      config: WilderlinksConfig(
+        baseURL: URL(string: "https://api.wilderlinks.space")!,
+        domains: ["go.yourbrand.com"]
+      ),
+      session: session
+    )
+
+    let result = await client.checkDeferredInstall()
+
+    XCTAssertTrue(result.matched)
+    XCTAssertEqual(result.destinationUrl, "https://example.com/from-pasteboard")
+
+    UIPasteboard.general.items = []
+  }
+
+  func testCheckDeferredInstallReturnsNotMatchedWhenPasteboardEmpty() async {
+    UIPasteboard.general.items = []
+
+    let client = WilderlinksClient(
+      config: WilderlinksConfig(
+        baseURL: URL(string: "https://api.wilderlinks.space")!,
+        domains: ["go.yourbrand.com"]
+      ),
+      session: mockSession { _ in XCTFail("Should not call the network with an empty pasteboard"); return jsonResponse("{}") }
+    )
+
+    let result = await client.checkDeferredInstall()
+
+    XCTAssertFalse(result.matched)
+  }
+  #endif
 }
 
 private final class MockURLProtocol: URLProtocol {

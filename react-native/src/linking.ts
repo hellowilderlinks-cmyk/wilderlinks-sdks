@@ -139,6 +139,7 @@ export interface ResolvedLink {
 }
 
 let config: WilderlinksConfig | null = null;
+let visitorId: string | null = null;
 
 export function init(cfg: WilderlinksConfig) {
   config = cfg;
@@ -202,6 +203,19 @@ function getOsVersion(): string | null {
   }
 }
 
+function stableVisitorId(): string {
+  if (visitorId) return visitorId;
+  const bytes = Array.from({ length: 16 }, () => Math.floor(Math.random() * 256));
+  visitorId = bytes.map((byte) => byte.toString(16).padStart(2, '0')).join('');
+  return visitorId;
+}
+
+function getDeviceVendor(platform: string): string | null {
+  if (platform === 'ios') return 'Apple';
+  if (platform === 'android') return 'Android';
+  return null;
+}
+
 /**
  * Call this with any URL your app receives via a Universal Link (iOS) or App Link (Android) -
  * typically from `Linking.addEventListener('url', ...)` or `Linking.getInitialURL()` on cold
@@ -237,6 +251,10 @@ export async function handleIncomingUrl(url: string): Promise<ResolvedLink> {
 
   const platform = getPlatform();
   const query = new URLSearchParams({ domain: parsed.hostname, slug, platform });
+  query.set('visitorId', stableVisitorId());
+  query.set('timezoneOffsetMinutes', String(new Date().getTimezoneOffset()));
+  const deviceVendor = getDeviceVendor(platform);
+  if (deviceVendor) query.set('deviceVendor', deviceVendor);
   const osVersion = getOsVersion();
   if (osVersion) query.set('osVersion', osVersion);
   const language = parsed.searchParams.get('language') || parsed.searchParams.get('lang');

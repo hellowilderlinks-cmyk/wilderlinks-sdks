@@ -12,6 +12,7 @@ namespace Wilderbots.Wilderlinks
     {
         private static readonly Regex MatchTokenRegex = new Regex("^[a-f0-9]{32}$", RegexOptions.IgnoreCase);
         private static readonly Regex ClipboardTokenRegex = new Regex("dl_match_token=([a-f0-9]{32})", RegexOptions.IgnoreCase);
+        private const string VisitorIdPrefsKey = "wilderlinks.visitorId";
         private static WilderlinksConfig _config;
 
         public static void Init(WilderlinksConfig config)
@@ -59,7 +60,9 @@ namespace Wilderbots.Wilderlinks
             {
                 { "domain", uri.Host },
                 { "slug", slug },
-                { "platform", PlatformName() }
+                { "platform", PlatformName() },
+                { "visitorId", VisitorId() },
+                { "timezoneOffsetMinutes", BrowserStyleTimezoneOffsetMinutes().ToString() }
             };
             if (segments.Length > 1)
             {
@@ -69,6 +72,9 @@ namespace Wilderbots.Wilderlinks
             if (!string.IsNullOrEmpty(password)) query["password"] = password;
             if (!string.IsNullOrEmpty(Application.systemLanguage.ToString())) query["language"] = Application.systemLanguage.ToString();
             query["osVersion"] = SystemInfo.operatingSystem;
+            if (!string.IsNullOrEmpty(SystemInfo.deviceModel)) query["deviceModel"] = SystemInfo.deviceModel;
+            var vendor = DeviceVendor();
+            if (!string.IsNullOrEmpty(vendor)) query["deviceVendor"] = vendor;
 
             var endpoint = TrimSlash(cfg.BaseUrl) + "/api/v1/resolve?" + BuildQuery(query);
             yield return SendGet<WilderlinksResolvedLink>(endpoint, null, result =>
@@ -357,6 +363,28 @@ namespace Wilderbots.Wilderlinks
             if (Application.platform == RuntimePlatform.IPhonePlayer) return "ios";
             if (Application.platform == RuntimePlatform.Android) return "android";
             return "other";
+        }
+
+        private static string VisitorId()
+        {
+            var existing = PlayerPrefs.GetString(VisitorIdPrefsKey, "");
+            if (MatchTokenRegex.IsMatch(existing)) return existing;
+            var generated = Guid.NewGuid().ToString("N").ToLowerInvariant();
+            PlayerPrefs.SetString(VisitorIdPrefsKey, generated);
+            PlayerPrefs.Save();
+            return generated;
+        }
+
+        private static int BrowserStyleTimezoneOffsetMinutes()
+        {
+            return -(int)TimeZoneInfo.Local.GetUtcOffset(DateTime.UtcNow).TotalMinutes;
+        }
+
+        private static string DeviceVendor()
+        {
+            if (Application.platform == RuntimePlatform.IPhonePlayer) return "Apple";
+            if (Application.platform == RuntimePlatform.Android) return "Android";
+            return null;
         }
 
         private static string TrimSlash(string url)

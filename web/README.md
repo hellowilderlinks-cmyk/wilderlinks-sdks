@@ -3,7 +3,7 @@
 This package covers two client-facing use cases:
 
 1. **Server-side link creation** from Node.js, Next.js, or serverless functions.
-2. **Browser-safe matching helpers** for deferred install and attribution checks.
+2. **Browser-safe matching helpers** for explicit token and attribution checks.
 
 ## Install
 
@@ -43,6 +43,11 @@ console.log(link.shortUrl);
 
 ## Check a deferred match in the browser
 
+This helper is for companion web experiences and legacy browser-storage flows.
+Current production mobile redirects do not rely on web storage. Android deferred
+installs should use Play Install Referrer, and mobile SDKs can exchange explicit
+tokens with `/api/v1/match`.
+
 ```ts
 import { checkDeferredMatch } from '@wilderlinks/wilderlinks-sdk';
 
@@ -51,6 +56,18 @@ const result = await checkDeferredMatch('https://api.wilderlinks.space');
 if (result.matched) {
   console.log(result.deepLinkPayload);
 }
+```
+
+## Exchange an explicit deferred token
+
+```ts
+const response = await fetch('https://api.wilderlinks.space/api/v1/match', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ matchToken: '<32-char-token>' }),
+});
+
+const result = await response.json();
 ```
 
 ## Match App Store attribution

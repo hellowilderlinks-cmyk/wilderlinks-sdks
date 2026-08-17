@@ -5,7 +5,10 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.net.Uri
 import android.os.Build
+import com.android.installreferrer.api.InstallReferrerClient
+import com.android.installreferrer.api.InstallReferrerStateListener
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
 import java.io.OutputStreamWriter
@@ -13,6 +16,9 @@ import java.net.HttpURLConnection
 import java.net.URL
 import java.net.URLEncoder
 import java.util.Locale
+import java.util.TimeZone
+import java.util.UUID
+import kotlin.coroutines.resume
 
 data class WilderlinksConfig(
   val baseUrl: String,
@@ -35,7 +41,7 @@ object Wilderlinks {
     this.config = config
   }
 
-  suspend fun handleIncomingUri(uri: Uri): ResolvedLink {
+  suspend fun handleIncomingUri(uri: Uri, context: Context? = null): ResolvedLink {
     val cfg = requireConfig()
     val deferredToken = uri.getQueryParameter("dl_match_token")
     if (deferredToken != null && deferredToken.matches(Regex("^[a-f0-9]{32}$"))) {
@@ -49,13 +55,21 @@ object Wilderlinks {
     if (slug.isBlank()) return ResolvedLink(matched = false, error = "No slug in URI")
 
     val pathPrefix = if (segments.size > 1) "/${segments.dropLast(1).joinToString("/")}/" else null
+    val tzOffsetMinutes = -(TimeZone.getDefault().getOffset(System.currentTimeMillis()) / 60000)
     val params = linkedMapOf(
       "domain" to uri.host.orEmpty(),
       "slug" to slug,
       "platform" to "android",
       "osVersion" to Build.VERSION.RELEASE.orEmpty(),
-      "language" to Locale.getDefault().toLanguageTag()
+      "language" to Locale.getDefault().toLanguageTag(),
+      "deviceVendor" to Build.MANUFACTURER.orEmpty(),
+      "deviceModel" to Build.MODEL.orEmpty(),
+      "timezoneOffsetMinutes" to tzOffsetMinutes.toString()
     )
+    context?.resources?.configuration?.smallestScreenWidthDp?.let { widthDp ->
+      params["deviceType"] = if (widthDp >= 600) "tablet" else "mobile"
+    }
+    context?.let { params["visitorId"] = visitorId(it.applicationContext) }
     if (pathPrefix != null) params["pathPrefix"] = pathPrefix
     uri.getQueryParameter("pw")?.let { params["password"] = it }
 
@@ -67,6 +81,47 @@ object Wilderlinks {
       ResolvedLink(matched = false, error = error.message ?: "Network error")
     }
   }
+
+  suspend fun checkInstallReferrer(context: Context): ResolvedLink {
+    val cfg = requireConfig()
+    val referrer = readInstallReferrer(context.applicationContext) ?: return ResolvedLink(matched = false)
+    val token = Regex("dl_match_token=([a-f0-9]{32})").find(referrer)?.groupValues?.get(1)
+      ?: return ResolvedLink(matched = false)
+    return matchDeferredToken(cfg.baseUrl, token)
+  }
+
+  private suspend fun readInstallReferrer(context: Context): String? =
+    suspendCancellableCoroutine { continuation ->
+      val client = InstallReferrerClient.newBuilder(context).build()
+      try {
+        client.startConnection(object : InstallReferrerStateListener {
+          override fun onInstallReferrerSetupFinished(responseCode: Int) {
+            val referrer = try {
+              if (responseCode == InstallReferrerClient.InstallReferrerResponse.OK) {
+                client.installReferrer?.installReferrer
+              } else {
+                null
+              }
+            } catch (error: Exception) {
+              null
+            } finally {
+              client.endConnection()
+            }
+            if (continuation.isActive) continuation.resume(referrer)
+          }
+
+          override fun onInstallReferrerServiceDisconnected() {
+            if (continuation.isActive) continuation.resume(null)
+          }
+        })
+      } catch (error: Exception) {
+        client.endConnection()
+        if (continuation.isActive) {
+          continuation.resume(null)
+        }
+      }
+      continuation.invokeOnCancellation { client.endConnection() }
+    }
 
   suspend fun checkDeferredInstall(context: Context): ResolvedLink {
     val cfg = requireConfig()
@@ -95,6 +150,15 @@ object Wilderlinks {
 
   private fun requireConfig(): WilderlinksConfig =
     config ?: throw IllegalStateException("WilderLinks SDK is not initialized. Call Wilderlinks.init(...) first.")
+
+  private fun visitorId(context: Context): String {
+    val prefs = context.getSharedPreferences("wilderlinks", Context.MODE_PRIVATE)
+    val existing = prefs.getString("visitor_id", null)
+    if (existing != null && existing.matches(Regex("^[a-f0-9]{32}$"))) return existing
+    val generated = UUID.randomUUID().toString().replace("-", "").lowercase(Locale.US)
+    prefs.edit().putString("visitor_id", generated).apply()
+    return generated
+  }
 
   private fun ClipData.firstText(context: Context): String? =
     if (itemCount > 0) getItemAt(0).coerceToText(context)?.toString() else null

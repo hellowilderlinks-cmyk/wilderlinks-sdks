@@ -19,4 +19,5 @@ kotlin {
 
 dependencies {
   api("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.9.0")
+  implementation("com.android.installreferrer:installreferrer:2.2")
 }

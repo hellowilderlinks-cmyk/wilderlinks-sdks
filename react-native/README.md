@@ -42,6 +42,9 @@ initWilderlinks({
 
 ## Resolve links inside your app
 
+Incoming link resolution sends a stable visitor id, timezone offset, OS version,
+and platform/vendor hints to WilderLinks.
+
 ```tsx
 function App() {
   const { resolved } = useWilderlinks();
@@ -92,6 +95,72 @@ const result = await matchInstallAttributionToken(
   'wl_<token-from-provider>',
   'app-store-campaign-token'
 );
+```
+
+## Deferred install matching
+
+The React Native package uses clipboard as the cross-platform fallback:
+
+```ts
+import { checkDeferredInstall } from '@wilderlinks/wilderlinks-react-native';
+
+const result = await checkDeferredInstall();
+```
+
+For production Android Play Store installs, use a native Play Install Referrer
+module. WilderLinks Play Store fallback URLs include
+`referrer=dl_match_token%3D<token>`. Extract the token and exchange it:
+
+```ts
+import { matchDeferredToken } from '@wilderlinks/wilderlinks-react-native';
+
+const result = await matchDeferredToken(
+  'https://api.wilderlinks.space',
+  '<32-char-token>'
+);
+```
+
+### Android Play Install Referrer bridge
+
+React Native JavaScript cannot read Play Install Referrer by itself. Add
+Google's dependency to `android/app/build.gradle` or
+`android/app/build.gradle.kts`:
+
+```kotlin
+dependencies {
+  implementation("com.android.installreferrer:installreferrer:2.2")
+}
+```
+
+Then expose a native method named something like `getInstallReferrer()` from
+your Android app. That method should return the raw Play referrer string from
+`InstallReferrerClient.installReferrer.installReferrer`.
+
+In React Native startup code, call your native module, extract the WilderLinks
+token, then fall back to clipboard only when Play Referrer has no token:
+
+```ts
+import { NativeModules } from 'react-native';
+import {
+  checkDeferredInstall,
+  matchDeferredToken,
+} from '@wilderlinks/wilderlinks-react-native';
+
+const { WilderlinksInstallReferrer } = NativeModules;
+
+async function checkPlayInstallReferrer() {
+  const referrer = await WilderlinksInstallReferrer.getInstallReferrer();
+  const token = /dl_match_token=([a-f0-9]{32})/.exec(referrer || '')?.[1];
+
+  if (!token) return null;
+
+  return matchDeferredToken('https://api.wilderlinks.space', token);
+}
+
+const playResult = await checkPlayInstallReferrer();
+const result = playResult?.matched
+  ? playResult
+  : await checkDeferredInstall();
 ```
 
 ## Support

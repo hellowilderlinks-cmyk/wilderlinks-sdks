@@ -60,6 +60,10 @@ void main() {
 
 ## Listen for incoming links
 
+Incoming link resolution sends visitor, device, timezone, OS, and language
+signals to WilderLinks so smart-routing rules and analytics can match native
+app opens more accurately.
+
 ```dart
 class _MyAppState extends State<MyApp> {
   final _listener = WilderlinksListener();
@@ -130,6 +134,120 @@ final result = await WilderlinksSdk.matchInstallAttributionToken(
   'wl_<token-from-provider>',
   provider: 'app-store-campaign-token',
 );
+```
+
+## Deferred install matching
+
+The Flutter SDK can read the gesture-gated clipboard fallback token:
+
+```dart
+final result = await WilderlinksSdk.checkDeferredInstall();
+```
+
+For production Android Play Store installs, use Play Install Referrer through
+native Android code or a Flutter plugin. Extract `dl_match_token=<token>` from
+the referrer string, then exchange it:
+
+```dart
+final result = await WilderlinksSdk.matchDeferredToken(
+  'https://api.wilderlinks.space',
+  '<32-char-token>',
+);
+```
+
+### Android Play Install Referrer bridge
+
+If your Flutter app does not already use an install-referrer plugin, add the
+native Android bridge below.
+
+Add Google's Install Referrer dependency in `android/app/build.gradle` or
+`android/app/build.gradle.kts`:
+
+```kotlin
+dependencies {
+  implementation("com.android.installreferrer:installreferrer:2.2")
+}
+```
+
+Then expose the Play referrer from
+`android/app/src/main/kotlin/.../MainActivity.kt`:
+
+```kotlin
+package your.package.name
+
+import com.android.installreferrer.api.InstallReferrerClient
+import com.android.installreferrer.api.InstallReferrerStateListener
+import io.flutter.embedding.android.FlutterActivity
+import io.flutter.embedding.engine.FlutterEngine
+import io.flutter.plugin.common.MethodChannel
+
+class MainActivity : FlutterActivity() {
+  private val channelName = "wilderlinks/install_referrer"
+
+  override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
+    super.configureFlutterEngine(flutterEngine)
+
+    MethodChannel(flutterEngine.dartExecutor.binaryMessenger, channelName)
+      .setMethodCallHandler { call, result ->
+        if (call.method != "getInstallReferrer") {
+          result.notImplemented()
+          return@setMethodCallHandler
+        }
+
+        val client = InstallReferrerClient.newBuilder(this).build()
+        client.startConnection(object : InstallReferrerStateListener {
+          override fun onInstallReferrerSetupFinished(responseCode: Int) {
+            try {
+              if (responseCode == InstallReferrerClient.InstallReferrerResponse.OK) {
+                result.success(client.installReferrer.installReferrer)
+              } else {
+                result.success(null)
+              }
+            } catch (error: Exception) {
+              result.error("INSTALL_REFERRER_ERROR", error.message, null)
+            } finally {
+              client.endConnection()
+            }
+          }
+
+          override fun onInstallReferrerServiceDisconnected() {
+            result.success(null)
+          }
+        })
+      }
+  }
+}
+```
+
+In Dart startup code, read the referrer, extract the WilderLinks token, and
+fall back to the SDK clipboard helper only when the Play referrer does not
+contain a token:
+
+```dart
+import 'package:flutter/services.dart';
+import 'package:wilderlinks_flutter_sdk/wilderlinks_flutter_sdk.dart';
+
+const _installReferrer = MethodChannel('wilderlinks/install_referrer');
+
+Future<ResolvedLink?> checkPlayInstallReferrer() async {
+  final referrer =
+      await _installReferrer.invokeMethod<String>('getInstallReferrer');
+  final token = RegExp(r'dl_match_token=([a-f0-9]{32})')
+      .firstMatch(referrer ?? '')
+      ?.group(1);
+
+  if (token == null) return null;
+
+  return WilderlinksSdk.matchDeferredToken(
+    'https://api.wilderlinks.space',
+    token,
+  );
+}
+
+final playResult = await checkPlayInstallReferrer();
+final result = playResult?.matched == true
+    ? playResult!
+    : await WilderlinksSdk.checkDeferredInstall();
 ```
 
 ## Example URLs used in docs

@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io' show Platform;
+import 'dart:math';
 import 'dart:ui' as ui;
 
 import 'package:flutter/foundation.dart' show kIsWeb;
@@ -27,6 +28,7 @@ class WilderlinksSdk {
 
   static WilderlinksConfig? _config;
   static http.Client _httpClient = http.Client();
+  static String? _visitorId;
 
   static void init(WilderlinksConfig config) {
     _config = config;
@@ -39,6 +41,7 @@ class WilderlinksSdk {
   static void reset() {
     _config = null;
     _httpClient = http.Client();
+    _visitorId = null;
   }
 
   static WilderlinksConfig _requireConfig() {
@@ -79,6 +82,43 @@ class WilderlinksSdk {
         : locale.languageCode;
   }
 
+  static String _stableVisitorId() {
+    final existing = _visitorId;
+    if (existing != null) return existing;
+    final random = _secureRandom();
+    final generated = List<int>.generate(16, (_) => random.nextInt(256))
+        .map((byte) => byte.toRadixString(16).padLeft(2, '0'))
+        .join();
+    _visitorId = generated;
+    return generated;
+  }
+
+  static Random _secureRandom() {
+    try {
+      return Random.secure();
+    } catch (_) {
+      return Random();
+    }
+  }
+
+  static String? _deviceType() {
+    final view = ui.PlatformDispatcher.instance.views.isNotEmpty
+        ? ui.PlatformDispatcher.instance.views.first
+        : null;
+    if (view == null) return null;
+    final shortestSide = view.physicalSize.shortestSide / view.devicePixelRatio;
+    return shortestSide >= 600 ? 'tablet' : 'mobile';
+  }
+
+  static String? _deviceVendor() {
+    if (kIsWeb) return null;
+    try {
+      if (Platform.isIOS) return 'Apple';
+      if (Platform.isAndroid) return 'Android';
+    } catch (_) {}
+    return null;
+  }
+
   /// Call this with any [Uri] your app receives via a Universal Link (iOS) or
   /// App Link (Android) - typically from an `app_links` stream subscription.
   /// Returns `ResolvedLink(matched: false)` for any URI that isn't one of your
@@ -112,8 +152,13 @@ class WilderlinksSdk {
       'slug': slug,
       if (pathPrefix != null) 'pathPrefix': pathPrefix,
       'platform': _platformName(),
+      'visitorId': _stableVisitorId(),
       if (_osVersion() != null) 'osVersion': _osVersion()!,
       if (_language() != null) 'language': _language()!,
+      if (_deviceType() != null) 'deviceType': _deviceType()!,
+      if (_deviceVendor() != null) 'deviceVendor': _deviceVendor()!,
+      'timezoneOffsetMinutes':
+          (-DateTime.now().timeZoneOffset.inMinutes).toString(),
       if (uri.queryParameters['pw'] != null)
         'password': uri.queryParameters['pw']!,
     };

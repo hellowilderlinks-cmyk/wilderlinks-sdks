@@ -33,6 +33,16 @@ if result.matched {
 
 ## Match a deferred install token
 
+WilderLinks uses a pasteboard token as the iOS deferred fallback. The redirect
+page writes `dl_match_token=<token>` only after a user gesture, and the SDK
+exchanges that token after first launch.
+
+```swift
+let result = await client.checkDeferredInstall()
+```
+
+You can also exchange a token obtained through your own attribution flow:
+
 ```swift
 let result = await client.matchDeferredToken("<32-char-token>")
 ```

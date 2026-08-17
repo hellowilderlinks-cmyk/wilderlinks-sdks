@@ -63,6 +63,17 @@ workspace and app profile.
 - Custom domains are optional. If you use one, add it in the dashboard and
   follow the generated CNAME/TXT DNS records before using it in SDK config.
 
+## Deferred deep link handoff by platform
+
+| Platform | Production Android deferred install source |
+| --- | --- |
+| Native Android | Built in: call `Wilderlinks.checkInstallReferrer(context)` |
+| Flutter | Add a Play Install Referrer MethodChannel or plugin, then call `matchDeferredToken` |
+| React Native | Add a native Play Install Referrer module or plugin, then call `matchDeferredToken` |
+| Unity | Add an Android native plugin/bridge, then call `MatchDeferredToken` |
+| iOS | No Play Install Referrer API; use pasteboard or install-attribution token fallback |
+| Web | Cannot read Play Install Referrer; web only exchanges explicit tokens or handles browser fallback |
+
 ## What the SDKs handle
 
 Depending on the platform, the SDKs can help with:

@@ -1,4 +1,7 @@
 import Foundation
+#if canImport(UIKit)
+import UIKit
+#endif
 
 public struct WilderlinksConfig: Sendable {
   public let baseURL: URL
@@ -88,6 +91,7 @@ public final class WilderlinksClient: @unchecked Sendable {
   private let config: WilderlinksConfig
   private let session: URLSession
   private let decoder = JSONDecoder()
+  private static let visitorDefaultsKey = "com.wilderbots.wilderlinks.visitorId"
 
   public init(config: WilderlinksConfig, session: URLSession = .shared) {
     self.config = config
@@ -117,9 +121,12 @@ public final class WilderlinksClient: @unchecked Sendable {
       URLQueryItem(name: "domain", value: host),
       URLQueryItem(name: "slug", value: slug),
       URLQueryItem(name: "platform", value: "ios"),
+      URLQueryItem(name: "visitorId", value: Self.visitorId()),
       URLQueryItem(name: "osVersion", value: ProcessInfo.processInfo.operatingSystemVersionString),
       URLQueryItem(name: "language", value: Locale.current.identifier.replacingOccurrences(of: "_", with: "-")),
+      URLQueryItem(name: "timezoneOffsetMinutes", value: String(-(TimeZone.current.secondsFromGMT() / 60))),
     ]
+    items.append(contentsOf: deviceSignalItems())
 
     if segments.count > 1 {
       items.append(URLQueryItem(name: "pathPrefix", value: "/\(segments.dropLast().joined(separator: "/"))/"))
@@ -139,6 +146,44 @@ public final class WilderlinksClient: @unchecked Sendable {
 
   public func matchDeferredToken(_ matchToken: String) async -> ResolvedLink {
     await post(path: "/api/v1/match", body: ["matchToken": matchToken])
+  }
+
+  private static func visitorId() -> String {
+    if let existing = UserDefaults.standard.string(forKey: visitorDefaultsKey),
+      existing.range(of: "^[a-f0-9]{32}$", options: .regularExpression) != nil {
+      return existing
+    }
+    let generated = UUID().uuidString.replacingOccurrences(of: "-", with: "").lowercased()
+    UserDefaults.standard.set(generated, forKey: visitorDefaultsKey)
+    return generated
+  }
+
+  private func deviceSignalItems() -> [URLQueryItem] {
+    #if canImport(UIKit)
+    let idiomIsPad = UIDevice.current.userInterfaceIdiom == .pad
+    return [
+      URLQueryItem(name: "deviceType", value: idiomIsPad ? "tablet" : "mobile"),
+      URLQueryItem(name: "deviceVendor", value: "Apple"),
+      URLQueryItem(name: "deviceModel", value: UIDevice.current.model),
+    ]
+    #else
+    return []
+    #endif
+  }
+
+  public func checkDeferredInstall() async -> ResolvedLink {
+    #if canImport(UIKit)
+    guard UIPasteboard.general.hasStrings, let text = UIPasteboard.general.string else {
+      return .notMatched()
+    }
+    guard let match = text.range(of: "dl_match_token=[a-f0-9]{32}", options: .regularExpression) else {
+      return .notMatched()
+    }
+    let token = String(text[match]).replacingOccurrences(of: "dl_match_token=", with: "")
+    return await matchDeferredToken(token)
+    #else
+    return .notMatched("Pasteboard unavailable on this platform")
+    #endif
   }
 
   public func matchInstallAttributionToken(

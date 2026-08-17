@@ -33,6 +33,9 @@ DNS should CNAME to `go.wilderlinks.space`.
 
 ## Resolve a link
 
+Resolve calls include a stable visitor id, browser-style timezone offset,
+device model, and device vendor when available.
+
 ```csharp
 StartCoroutine(WilderlinksClient.HandleIncomingUrl(url, result =>
 {
@@ -44,6 +47,10 @@ StartCoroutine(WilderlinksClient.HandleIncomingUrl(url, result =>
 
 ## Check deferred install
 
+This reads the clipboard fallback token. For production Android Play Store
+installs, read Play Install Referrer in native code and pass the extracted
+`dl_match_token` value to `MatchDeferredToken`.
+
 ```csharp
 StartCoroutine(WilderlinksClient.CheckDeferredInstall(result =>
 {
@@ -52,6 +59,58 @@ StartCoroutine(WilderlinksClient.CheckDeferredInstall(result =>
         Debug.Log(result.deepLinkPayloadJson);
     }
 }));
+```
+
+```csharp
+StartCoroutine(WilderlinksClient.MatchDeferredToken(
+    "https://api.wilderlinks.space",
+    "<32-char-token>",
+    result => Debug.Log(result.deepLinkPayloadJson)
+));
+```
+
+### Android Play Install Referrer bridge
+
+Unity C# cannot read Play Install Referrer by itself. For production Android
+deferred deep links, add Google's dependency to the Android app build:
+
+```gradle
+dependencies {
+    implementation "com.android.installreferrer:installreferrer:2.2"
+}
+```
+
+Then add an Android native plugin that returns the raw Play referrer string from
+`InstallReferrerClient.installReferrer.installReferrer`. From Unity startup
+code, call that plugin, extract the WilderLinks token, and exchange it:
+
+```csharp
+using System.Text.RegularExpressions;
+using Wilderbots.Wilderlinks;
+
+void CheckAndroidDeferredInstall()
+{
+    using (var plugin = new AndroidJavaClass("your.package.WilderlinksReferrerPlugin"))
+    {
+        var referrer = plugin.CallStatic<string>("getInstallReferrer");
+        var match = Regex.Match(referrer ?? "", "dl_match_token=([a-f0-9]{32})");
+
+        if (!match.Success)
+        {
+            StartCoroutine(WilderlinksClient.CheckDeferredInstall(result =>
+            {
+                if (result.matched) Debug.Log(result.deepLinkPayloadJson);
+            }));
+            return;
+        }
+
+        StartCoroutine(WilderlinksClient.MatchDeferredToken(
+            "https://api.wilderlinks.space",
+            match.Groups[1].Value,
+            result => Debug.Log(result.deepLinkPayloadJson)
+        ));
+    }
+}
 ```
 
 ## Create a smart link
