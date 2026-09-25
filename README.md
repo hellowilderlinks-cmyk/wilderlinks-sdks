@@ -3,7 +3,7 @@
 WilderLinks gives your product one link system for:
 
 - direct deep linking
-- deferred deep linking after install
+- token-based deferred matching after install when the app receives a token
 - Universal Links and Android App Links
 - QR campaigns
 - analytics-ready routing
@@ -19,7 +19,7 @@ This folder contains the official SDKs for different client stacks.
 | `react-native/` | React Native apps |
 | `android/` | Native Android apps |
 | `ios/` | Native iOS apps |
-| `web/` | Node.js backends and browser web apps |
+| `web/` | Trusted Node.js backends; limited browser token helper |
 | `unity/` | Unity games and interactive apps |
 | `cli/` | Terminal workflows and CI automation |
 
@@ -27,7 +27,7 @@ This folder contains the official SDKs for different client stacks.
 
 - Website: `https://wilderlinks.space`
 - Dashboard: `https://wilderlinks.space`
-- Pricing: `https://wilderlinks.space/pricing`
+- Developer docs: `https://wilderlinks.space/docs`
 - Contact: `https://wilderlinks.space/contact`
 - SDK repository: `https://github.com/hellowilderlinks-cmyk/wilderlinks-sdks`
 
@@ -65,13 +65,13 @@ workspace and app profile.
 
 ## Deferred deep link handoff by platform
 
-| Platform | Production Android deferred install source |
+| Platform | Deferred-token handoff |
 | --- | --- |
 | Native Android | Built in: call `Wilderlinks.checkInstallReferrer(context)` |
 | Flutter | Add a Play Install Referrer MethodChannel or plugin, then call `matchDeferredToken` |
 | React Native | Add a native Play Install Referrer module or plugin, then call `matchDeferredToken` |
 | Unity | Add an Android native plugin/bridge, then call `MatchDeferredToken` |
-| iOS | No Play Install Referrer API; use pasteboard or install-attribution token fallback |
+| iOS | No automatic App Store token recovery; use gesture-dependent pasteboard or a token supplied by your own attribution flow |
 | Web | Cannot read Play Install Referrer; web only exchanges explicit tokens or handles browser fallback |
 
 ## What the SDKs handle
@@ -82,9 +82,15 @@ Depending on the platform, the SDKs can help with:
 - matching deferred installs
 - creating short links and smart links
 - working with app-specific path prefixes
-- reading install attribution tokens
+- exchanging install attribution tokens supplied by the app integration
 - sending custom events
 - generating QR-ready links from trusted runtimes
 
 Each SDK README explains the supported flows, install steps, and production
 integration pattern for that platform.
+
+Organization API keys are secrets. Never embed them in Flutter, React Native,
+native mobile, Unity client builds, or browser JavaScript. Create links, fetch
+QR codes, and submit API-key custom events from a trusted server or the dashboard.
+`POST /api/v1/test/resolve` is a read-only configuration inspector, not the
+production `GET /api/v1/resolve` resolver.

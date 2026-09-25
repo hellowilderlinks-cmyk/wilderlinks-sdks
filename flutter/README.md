@@ -3,7 +3,8 @@
 The Flutter SDK helps your app handle the two main WilderLinks flows:
 
 1. A user taps a smart link and your app is already installed.
-2. A user taps a smart link, installs the app, and opens it for the first time.
+2. A user installs the app after tapping a link and your app receives a token
+   through a supported, platform-specific handoff.
 
 It also supports app-specific path prefixes when multiple apps share one branded
 domain.
@@ -96,37 +97,17 @@ class _MyAppState extends State<MyApp> {
 }
 ```
 
-## Create a short link
+## Create links from a trusted server
 
-Use this when you only need a short URL that redirects to a long destination.
-
-```dart
-final shortUrl = await WilderlinksSdk.createShortLink(
-  'https://wilderlinks.space/pricing',
-);
-```
-
-## Create a smart app link
-
-Use this when your app should receive structured routing data.
-
-```dart
-final link = await WilderlinksSdk.createDeepLink(
-  defaultUrl: 'https://wilderlinks.space/features/flutter-sdk',
-  title: 'Flutter SDK',
-  pathPrefix: 'x4I9',
-  deepLinkPayload: {
-    'screen': 'sdk',
-    'sdk': 'flutter',
-  },
-);
-
-print(link.shortUrl);
-```
+The Flutter SDK exposes API-key link and event methods, but organization API
+keys must never be embedded in a distributed app. Use the dashboard or a
+trusted backend for link creation, QR retrieval, and custom events. See
+`https://wilderlinks.space/docs` for the external API.
 
 ## Match App Store attribution
 
-If your iOS install attribution flow returns a `wl_<token>` value, exchange it:
+If your own iOS attribution flow returns a `wl_<token>` value, exchange it.
+The SDK does not automatically retrieve a token from the App Store:
 
 ```dart
 final result = await WilderlinksSdk.matchInstallAttributionToken(
@@ -255,9 +236,9 @@ final result = playResult?.matched == true
 - API base: `https://api.wilderlinks.space`
 - Workspace default domain: `https://your-workspace.wilderlinks.space`
 - Custom domain CNAME target: `go.wilderlinks.space`
-- Product URL example: `https://wilderlinks.space/features/flutter-sdk`
+- Product URL example: `https://wilderlinks.space/docs`
 - Registration/dashboard: `https://wilderlinks.space`
-- Dashboard app setup: `https://wilderlinks.space/settings`
+- Dashboard app setup: `https://wilderlinks.space/apps`
 - Custom domain setup: `https://wilderlinks.space/domains`
 
 ## Support

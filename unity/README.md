@@ -3,9 +3,8 @@
 Use the Unity SDK when your game or app needs to:
 
 - resolve incoming smart links
-- recover deferred install matches
-- create app links from trusted builds
-- send custom engagement events
+- exchange deferred tokens when a token reaches the app
+- handle configured incoming links after native OS integration
 
 ## Install
 
@@ -22,14 +21,17 @@ using Wilderbots.Wilderlinks;
 
 WilderlinksClient.Init(new WilderlinksConfig(
     baseUrl: "https://api.wilderlinks.space",
-    domains: new[] { "your-workspace.wilderlinks.space" },
-    apiKey: "dlk_xxx"
+    domains: new[] { "your-workspace.wilderlinks.space" }
 ));
 ```
 
 Use the default domain shown in your WilderLinks workspace, such as
 `your-workspace.wilderlinks.space`, or a verified custom domain. Custom domain
 DNS should CNAME to `go.wilderlinks.space`.
+
+Do not embed an organization API key in a distributed Unity client build.
+Link creation, QR export, and custom event API-key calls belong on a trusted
+server or in the dashboard. The SDK exposes those methods for trusted runtimes.
 
 ## Resolve a link
 
@@ -80,68 +82,16 @@ dependencies {
 }
 ```
 
-Then add an Android native plugin that returns the raw Play referrer string from
-`InstallReferrerClient.installReferrer.installReferrer`. From Unity startup
-code, call that plugin, extract the WilderLinks token, and exchange it:
+Add an app-side Android plugin to read the Play referrer, extract
+`dl_match_token`, and pass it to `MatchDeferredToken` above. No native OS/referrer
+bridge is bundled with this Unity package. Clipboard fallback is
+user/platform-dependent.
 
-```csharp
-using System.Text.RegularExpressions;
-using Wilderbots.Wilderlinks;
+## Server-side API-key operations
 
-void CheckAndroidDeferredInstall()
-{
-    using (var plugin = new AndroidJavaClass("your.package.WilderlinksReferrerPlugin"))
-    {
-        var referrer = plugin.CallStatic<string>("getInstallReferrer");
-        var match = Regex.Match(referrer ?? "", "dl_match_token=([a-f0-9]{32})");
-
-        if (!match.Success)
-        {
-            StartCoroutine(WilderlinksClient.CheckDeferredInstall(result =>
-            {
-                if (result.matched) Debug.Log(result.deepLinkPayloadJson);
-            }));
-            return;
-        }
-
-        StartCoroutine(WilderlinksClient.MatchDeferredToken(
-            "https://api.wilderlinks.space",
-            match.Groups[1].Value,
-            result => Debug.Log(result.deepLinkPayloadJson)
-        ));
-    }
-}
-```
-
-## Create a smart link
-
-```csharp
-var request = new WilderlinksCreateLinkRequest
-{
-    defaultUrl = "https://www.clientbrand.com/summer-sale",
-    title = "Launch Offer",
-    deepLinkPayloadJson = "{\"screen\":\"offer\",\"offerId\":\"summer24\"}"
-};
-
-StartCoroutine(WilderlinksClient.CreateLink(request, link =>
-{
-    Debug.Log(link.shortUrl);
-}));
-```
-
-## Track an event
-
-```csharp
-StartCoroutine(WilderlinksClient.TrackEvent(new WilderlinksTrackEventRequest
-{
-    name = "level_complete",
-    linkId = "link_id",
-    value = 1
-}, result =>
-{
-    if (!string.IsNullOrEmpty(result.error)) Debug.LogError(result.error);
-}));
-```
+Create links and submit custom events from a trusted backend instead of a
+shipped game client. See `https://wilderlinks.space/docs` for API endpoints and
+scopes.
 
 ## Support
 

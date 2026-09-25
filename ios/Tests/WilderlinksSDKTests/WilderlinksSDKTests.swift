@@ -16,6 +16,90 @@ final class WilderlinksSDKTests: XCTestCase {
     XCTAssertEqual(result.error, "No link")
   }
 
+  func testCreateLinkPostsAuthenticatedRequestAndDecodesResponse() async throws {
+    let session = mockSession { request in
+      XCTAssertEqual(request.url?.path, "/api/v1/links")
+      XCTAssertEqual(request.httpMethod, "POST")
+      XCTAssertEqual(request.value(forHTTPHeaderField: "Authorization"), "ApiKey dlk_test")
+      XCTAssertEqual(request.value(forHTTPHeaderField: "Content-Type"), "application/json")
+
+      let body = try! JSONSerialization.jsonObject(with: requestBodyData(request)) as! [String: Any]
+      XCTAssertEqual(body["defaultUrl"] as? String, "https://example.com/offer")
+      XCTAssertEqual(body["appProfileId"] as? String, "app_123")
+      let payload = body["deepLinkPayload"] as? [String: String]
+      XCTAssertEqual(payload?["screen"], "offer")
+
+      return jsonResponse("""
+      {
+        "_id": "link_123",
+        "slug": "offer",
+        "defaultUrl": "https://example.com/offer",
+        "shortUrl": "https://go.example.com/offer",
+        "clickCount": 0,
+        "isActive": true
+      }
+      """, statusCode: 201)
+    }
+    let client = WilderlinksClient(
+      config: WilderlinksConfig(
+        baseURL: URL(string: "https://api.wilderlinks.space")!,
+        domains: [],
+        apiKey: "dlk_test"
+      ),
+      session: session
+    )
+
+    let result = try await client.createLink(
+      defaultUrl: "https://example.com/offer",
+      appProfileId: "app_123",
+      deepLinkPayload: ["screen": .string("offer")]
+    )
+
+    XCTAssertEqual(result.id, "link_123")
+    XCTAssertEqual(result.shortUrl, "https://go.example.com/offer")
+    XCTAssertEqual(result.clickCount, 0)
+  }
+
+  func testCreateLinkRequiresApiKey() async {
+    let client = WilderlinksClient(
+      config: WilderlinksConfig(
+        baseURL: URL(string: "https://api.wilderlinks.space")!,
+        domains: []
+      ),
+      session: mockSession { _ in XCTFail("Must not send a request without an API key"); return jsonResponse("{}") }
+    )
+
+    do {
+      _ = try await client.createLink(defaultUrl: "https://example.com")
+      XCTFail("Expected missing API key error")
+    } catch WilderlinksAPIError.missingAPIKey {
+      // Expected.
+    } catch {
+      XCTFail("Unexpected error: \(error)")
+    }
+  }
+
+  func testCreateLinkSurfacesApiErrorStatusAndMessage() async {
+    let client = WilderlinksClient(
+      config: WilderlinksConfig(
+        baseURL: URL(string: "https://api.wilderlinks.space")!,
+        domains: [],
+        apiKey: "dlk_test"
+      ),
+      session: mockSession { _ in jsonResponse("{\"error\":\"Slug already in use\"}", statusCode: 409) }
+    )
+
+    do {
+      _ = try await client.createLink(defaultUrl: "https://example.com")
+      XCTFail("Expected API error")
+    } catch let WilderlinksAPIError.httpStatus(statusCode, message) {
+      XCTAssertEqual(statusCode, 409)
+      XCTAssertEqual(message, "Slug already in use")
+    } catch {
+      XCTFail("Unexpected error: \(error)")
+    }
+  }
+
   func testHandleIncomingURLResolvesPrefixedUniversalLink() async {
     let session = mockSession { request in
       let components = URLComponents(url: request.url!, resolvingAgainstBaseURL: false)!

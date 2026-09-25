@@ -3,9 +3,9 @@
 The React Native SDK helps your app handle:
 
 - direct opens when the app is already installed
-- deferred matching after a fresh install
+- token-based deferred matching when a token reaches the app
 - app-specific smart-link payloads
-- App Store attribution token recovery
+- exchange of attribution tokens supplied by your own integration
 
 ## Install
 
@@ -36,7 +36,6 @@ import { initWilderlinks, useWilderlinks } from '@wilderlinks/wilderlinks-react-
 initWilderlinks({
   baseUrl: 'https://api.wilderlinks.space',
   domains: ['your-workspace.wilderlinks.space'],
-  apiKey: 'dlk_xxx',
 });
 ```
 
@@ -60,32 +59,17 @@ function App() {
 }
 ```
 
-## Create a smart link
+## Create links and submit events from a trusted server
 
-```ts
-import { createWildlink } from '@wilderlinks/wilderlinks-react-native';
-
-const link = await createWildlink({
-  defaultUrl: 'https://www.clientbrand.com/summer-sale',
-  title: 'Summer launch',
-  appProfileId: 'app_profile_123',
-  deepLinkPayload: { screen: 'offer', offerId: 'summer24' },
-});
-
-console.log(link.shortUrl);
-```
-
-## Create a plain short link
-
-```ts
-import { createShortLink } from '@wilderlinks/wilderlinks-react-native';
-
-const shortUrl = await createShortLink({
-  defaultUrl: 'https://www.clientbrand.com/summer-sale',
-});
-```
+The package exposes API-key methods, but organization API keys are secrets.
+Never embed one in a React Native build. Use the dashboard or call the external
+API from your trusted backend for link creation, retrieval, QR export, and
+custom events. See `https://wilderlinks.space/docs` for server examples.
 
 ## Match install attribution
+
+This method exchanges a token your own attribution integration has supplied;
+it does not automatically retrieve an App Store install token.
 
 ```ts
 import { matchInstallAttributionToken } from '@wilderlinks/wilderlinks-react-native';
@@ -132,36 +116,9 @@ dependencies {
 }
 ```
 
-Then expose a native method named something like `getInstallReferrer()` from
-your Android app. That method should return the raw Play referrer string from
-`InstallReferrerClient.installReferrer.installReferrer`.
-
-In React Native startup code, call your native module, extract the WilderLinks
-token, then fall back to clipboard only when Play Referrer has no token:
-
-```ts
-import { NativeModules } from 'react-native';
-import {
-  checkDeferredInstall,
-  matchDeferredToken,
-} from '@wilderlinks/wilderlinks-react-native';
-
-const { WilderlinksInstallReferrer } = NativeModules;
-
-async function checkPlayInstallReferrer() {
-  const referrer = await WilderlinksInstallReferrer.getInstallReferrer();
-  const token = /dl_match_token=([a-f0-9]{32})/.exec(referrer || '')?.[1];
-
-  if (!token) return null;
-
-  return matchDeferredToken('https://api.wilderlinks.space', token);
-}
-
-const playResult = await checkPlayInstallReferrer();
-const result = playResult?.matched
-  ? playResult
-  : await checkDeferredInstall();
-```
+Add an app-side native module to read the raw Play referrer; no such module is
+bundled with this package. Extract `dl_match_token` and pass it to
+`matchDeferredToken` as shown above. Use clipboard matching only as a fallback.
 
 ## Support
 
